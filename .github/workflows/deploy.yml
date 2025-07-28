@@ -2,7 +2,7 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [developer]
+    branches: [dev]
 
 jobs:
   build-and-deploy:
@@ -16,6 +16,7 @@ jobs:
 
       # - name: Run tests
       #   run: npm test
+
 
       - name: Build project
         run: npm run build
