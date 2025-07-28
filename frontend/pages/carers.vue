@@ -14,7 +14,7 @@ import CarerList from "~/components/CarerList.vue";
 const carers = ref([]);
 
 async function fetchCarers() {
-  const res = await fetch("http://localhost:3001/api/carers");
+  const res = await fetch("http://16.171.144.204:3001/api/carers");
   carers.value = await res.json();
 }
 

@@ -49,7 +49,7 @@ const messages = ref([]);
 const input = ref("");
 const loading = ref(false);
 
-const API_URL = "http://localhost:3001/api/chat";
+const API_URL = "http://16.171.144.204:3001/api/chat";
 async function fetchMessages() {
   loading.value = true;
   try {

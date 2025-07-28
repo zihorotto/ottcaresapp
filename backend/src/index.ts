@@ -12,7 +12,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new SocketIOServer(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "http://16.171.144.204:3000",
     credentials: true,
   },
 });
@@ -20,7 +20,7 @@ const PORT = 3001;
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "http://16.171.144.204:3000",
     credentials: true,
   })
 );
@@ -29,7 +29,7 @@ import path from "path";
 const UPLOADS_PATH = path.resolve(__dirname, "../uploads");
 // Add CORS header for static image responses to fix ORB
 app.use("/uploads", (req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.header("Access-Control-Allow-Origin", "http://16.171.144.204:3000");
   next();
 });
 app.use("/uploads", express.static(UPLOADS_PATH));

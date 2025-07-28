@@ -99,7 +99,7 @@ async function handleSubmit() {
     for (const ref of refs) {
       fd.append("references[]", ref);
     }
-    const res = await fetch("http://localhost:3001/api/carers", {
+    const res = await fetch("http://16.171.144.204:3001/api/carers", {
       method: "POST",
       body: fd,
     });

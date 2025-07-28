@@ -136,7 +136,7 @@ const minimizedChat = ref(false);
 
 onMounted(async () => {
   const res = await fetch(
-    `http://localhost:3001/api/carers/${route.params.id}`
+    `http://16.171.144.204:3001/api/carers/${route.params.id}`
   );
   carer.value = await res.json();
 });
