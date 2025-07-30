@@ -32,7 +32,7 @@ const router = useRouter();
 async function fetchProfile() {
   try {
     // Adjust the endpoint as needed for your backend
-    const res = await axios.get('/api/carers/me');
+    const res = await axios.get('/carers/me');
     profile.value = res.data;
   } catch (e) {
     profile.value = null;

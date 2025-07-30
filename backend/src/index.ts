@@ -35,9 +35,9 @@ app.use("/uploads", (req, res, next) => {
   next();
 });
 app.use("/uploads", express.static(UPLOADS_PATH));
-app.use("/api/carers", carerRoutes);
-app.use("/api/chat", chatRoutes);
-app.use("/api/profile", profileRoutes);
+app.use("/carers", carerRoutes);
+app.use("/chat", chatRoutes);
+app.use("/profile", profileRoutes);
 
 // --- Socket.io Chat Events ---
 io.on("connection", (socket: import("socket.io").Socket) => {

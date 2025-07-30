@@ -32,7 +32,7 @@ const loading = ref(true);
 
 async function fetchProfile() {
   try {
-    const res = await axios.get('/api/carers/me');
+    const res = await axios.get('/carers/me');
     profile.value = res.data;
   } catch (e) {
     profile.value = null;

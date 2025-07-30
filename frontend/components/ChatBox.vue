@@ -50,7 +50,7 @@ const messages = ref([]);
 const input = ref('');
 const loading = ref(false);
 
-const API_URL = 'https://16.171.144.204/api/chat';
+const API_URL = 'https://16.171.144.204/chat';
 function getChatUrl() {
   return `${API_URL}/${props.carerId}/${props.userId}`;
 }

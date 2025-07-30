@@ -76,7 +76,7 @@ async function handleSubmit() {
     for (const ref of refs) {
       fd.append('references[]', ref);
     }
-    const res = await fetch('https://16.171.144.204/api/carers', {
+    const res = await fetch('https://16.171.144.204/carers', {
       method: 'POST',
       body: fd,
     });

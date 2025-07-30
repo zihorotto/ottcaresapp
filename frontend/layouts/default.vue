@@ -36,7 +36,7 @@ const user = ref(null);
 const hasProfile = ref(false);
 async function checkProfile() {
   try {
-    const res = await fetch('/api/carers/me');
+    const res = await fetch('/carers/me');
     hasProfile.value = res.ok;
   } catch {
     hasProfile.value = false;

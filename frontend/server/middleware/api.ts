@@ -1,5 +1,4 @@
 import { createProxyMiddleware } from 'http-proxy-middleware';
-
 export default defineEventHandler(async (event) => {
   if (event.node.req.url?.startsWith('/api')) {
     // @ts-ignore

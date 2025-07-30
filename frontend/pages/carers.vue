@@ -24,7 +24,7 @@ function handleLogout() {
 async function fetchCarers() {
   const user = await userManager.getUser();
   if (!user) return;
-  const res = await fetch('https://16.171.144.204/api/carers', {
+  const res = await fetch('https://16.171.144.204/carers', {
     headers: { Authorization: `Bearer ${user.id_token}` },
   });
   const allCarers = await res.json();
