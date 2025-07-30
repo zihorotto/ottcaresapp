@@ -5,7 +5,7 @@ export default defineEventHandler(async (event) => {
   if (event.node.req.url?.startsWith('/api')) {
     // @ts-ignore
     return createProxyMiddleware({
-      target: 'http://16.171.144.204:3001',
+      target: 'https://16.171.144.204',
       changeOrigin: true,
       pathRewrite: { '^/api': '/api' },
       secure: false,

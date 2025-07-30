@@ -5,7 +5,7 @@ export default defineEventHandler(async (event) => {
     // @ts-ignore
     return new Promise((resolve, reject) => {
       createProxyMiddleware({
-        target: 'http://16.171.144.204:3001',
+        target: 'https://16.171.144.204',
         changeOrigin: true,
         pathRewrite: { '^/api': '/api' },
         secure: false,
