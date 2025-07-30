@@ -11,10 +11,7 @@
         <div v-else class="profile-img profile-img-fallback">
           <svg width="60" height="60" viewBox="0 0 40 40" fill="none">
             <circle cx="20" cy="20" r="20" fill="#e0f2fe" />
-            <path
-              d="M20 22c-4.418 0-8 1.79-8 4v2h16v-2c0-2.21-3.582-4-8-4z"
-              fill="#38bdf8"
-            />
+            <path d="M20 22c-4.418 0-8 1.79-8 4v2h16v-2c0-2.21-3.582-4-8-4z" fill="#38bdf8" />
             <circle cx="20" cy="15" r="5" fill="#14b8a6" />
           </svg>
         </div>
@@ -40,20 +37,11 @@
             </svg>
             {{ carer.experience }} Jahre Erfahrung
           </span>
-          <span
-            :class="
-              carer.available ? 'profile-available' : 'profile-unavailable'
-            "
-          >
+          <span :class="carer.available ? 'profile-available' : 'profile-unavailable'">
             <svg class="icon" width="18" height="18" viewBox="0 0 24 24">
-              <circle
-                :fill="carer.available ? '#14b8a6' : '#ef4444'"
-                cx="12"
-                cy="12"
-                r="8"
-              />
+              <circle :fill="carer.available ? '#14b8a6' : '#ef4444'" cx="12" cy="12" r="8" />
             </svg>
-            {{ carer.available ? "Verfügbar" : "Nicht verfügbar" }}
+            {{ carer.available ? 'Verfügbar' : 'Nicht verfügbar' }}
           </span>
         </div>
       </div>
@@ -83,16 +71,9 @@
       <div class="profile-section">
         <h3 class="profile-section-title">Referenzen</h3>
         <ul class="profile-references">
-          <li
-            v-for="ref in carer.references"
-            :key="ref"
-            class="profile-reference-item"
-          >
+          <li v-for="ref in carer.references" :key="ref" class="profile-reference-item">
             <svg class="icon" width="16" height="16" viewBox="0 0 24 24">
-              <path
-                fill="#14b8a6"
-                d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"
-              />
+              <path fill="#14b8a6" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
             </svg>
             {{ ref }}
           </li>
@@ -114,6 +95,8 @@
       <ChatBox
         v-if="showChat"
         :minimized="minimizedChat"
+        :carer-id="route.params.id"
+        :user-id="userId"
         :name="carer.name"
         class="chatbox-right"
         @close="showChat = false"
@@ -125,18 +108,41 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
-import { useRoute } from "vue-router";
-import AnimatedBg from "~/components/AnimatedBg.vue";
-import ChatBox from "~/components/ChatBox.vue";
+import { ref, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
+import AnimatedBg from '~/components/AnimatedBg.vue';
+import ChatBox from '~/components/ChatBox.vue';
+import { userManager } from '~/src/plugins/cognitoOidc';
 const route = useRoute();
-const carer = ref({});
+const carer = ref({
+  name: '',
+  city: '',
+  experience: 0,
+  available: false,
+  profileImageUrl: '',
+  email: '',
+  phone: '',
+  references: [],
+  availabilityDetails: '',
+});
 const showChat = ref(false);
 const minimizedChat = ref(false);
+const userId = ref('');
 
 onMounted(async () => {
+  // Get current user and token
+  const user = await userManager.getUser();
+  userId.value = user?.profile?.email || user?.profile?.sub || 'guest';
+  let token = user?.access_token || user?.id_token;
   const res = await fetch(
-    `http://16.171.144.204:3001/api/carers/${route.params.id}`
+    `http://16.171.144.204:3001/api/carers/${route.params.id}`,
+    token
+      ? {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      : undefined,
   );
   carer.value = await res.json();
 });
@@ -296,7 +302,9 @@ onMounted(async () => {
   color: #fff;
   font-weight: 700;
   box-shadow: 0 4px 16px 0 rgba(20, 184, 166, 0.18);
-  transition: background 0.2s, box-shadow 0.2s;
+  transition:
+    background 0.2s,
+    box-shadow 0.2s;
 }
 .chat-btn:hover {
   background: linear-gradient(90deg, #14b8a6 0%, #38bdf8 100%);

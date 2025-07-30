@@ -7,15 +7,28 @@
 </template>
 
 <script setup lang="ts">
-import AnimatedBg from "~/components/AnimatedBg.vue";
-definePageMeta({ layout: "default" });
-import { ref } from "vue";
-import CarerList from "~/components/CarerList.vue";
+import AnimatedBg from '~/components/AnimatedBg.vue';
+definePageMeta({ layout: 'default' });
+import { ref } from 'vue';
+import CarerList from '~/components/CarerList.vue';
+import { userManager, signOutRedirect } from '~/src/plugins/cognitoOidc';
 const carers = ref([]);
 
+function handleLogin() {
+  userManager.signinRedirect();
+}
+function handleLogout() {
+  signOutRedirect();
+}
+
 async function fetchCarers() {
-  const res = await fetch("http://16.171.144.204:3001/api/carers");
-  carers.value = await res.json();
+  const user = await userManager.getUser();
+  if (!user) return;
+  const res = await fetch('http://16.171.144.204:3001/api/carers', {
+    headers: { Authorization: `Bearer ${user.id_token}` },
+  });
+  const allCarers = await res.json();
+  carers.value = allCarers.filter((c) => c.role === 'pfleger');
 }
 
 fetchCarers();
@@ -62,7 +75,10 @@ fetchCarers();
   box-shadow: 0 4px 16px 0 rgba(124, 58, 237, 0.18);
   border: none;
   cursor: pointer;
-  transition: transform 0.15s, box-shadow 0.15s, background 0.2s;
+  transition:
+    transform 0.15s,
+    box-shadow 0.15s,
+    background 0.2s;
   outline: none;
   position: relative;
   overflow: hidden;

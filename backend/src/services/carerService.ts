@@ -1,3 +1,6 @@
+export async function getCarerByEmail(email: string) {
+  return Carer.findOne({ email });
+}
 import Carer from "../models/Carer";
 
 export async function getAllCarers() {
@@ -11,13 +14,15 @@ export async function getCarerById(id: string) {
 export async function createCarer(data: {
   name: string;
   city: string;
-  experience: number;
-  available: boolean;
+  experience?: number;
+  available?: boolean;
   profileImageUrl?: string;
   email?: string;
   phone?: string;
   references?: string[];
   availabilityDetails?: string;
+  role?: string;
+  diseases?: string;
 }) {
   const carer = new Carer(data);
   return carer.save();

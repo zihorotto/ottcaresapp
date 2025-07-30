@@ -1,10 +1,10 @@
-// Add this to your main Express app (usually in src/index.ts or app.ts):
-// import express from "express";
-// app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+// All import statements at the top
 import { Router } from "express";
+import { authenticateJWT } from "../middleware/authenticateJWT";
 import multer from "multer";
 import sharp from "sharp";
 import path from "path";
+import fs from "fs";
 import {
   getAllCarers,
   getCarerById,
@@ -12,10 +12,27 @@ import {
   updateCarer,
   deleteCarer,
 } from "../services/carerService";
+
 const router = Router();
 
+// Get current user's carer profile (protected)
+router.get("/me", authenticateJWT, async (req, res) => {
+  try {
+    // Email from JWT (Cognito)
+    const user = (req as any).user;
+    const email = user?.email;
+    if (!email) return res.status(400).json({ error: "No email in token" });
+    const carer = await getAllCarers();
+    const found = carer.find((c: any) => c.email === email);
+    if (!found) return res.status(404).json({ error: "Profile not found" });
+    res.json(found);
+  } catch (err) {
+    res.status(500).json({ error: "Database error" });
+  }
+});
+
+// eslint-disable-next-line no-undef
 const UPLOADS_PATH = path.resolve(__dirname, "../../uploads");
-import fs from "fs";
 if (!fs.existsSync(UPLOADS_PATH)) {
   fs.mkdirSync(UPLOADS_PATH, { recursive: true });
 }
@@ -29,8 +46,8 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// Get all carers
-router.get("/", async (req, res) => {
+// Get all carers (protected)
+router.get("/", authenticateJWT, async (req, res) => {
   try {
     const carers = await getAllCarers();
     const baseUrl = req.protocol + "://" + req.get("host");
@@ -54,6 +71,7 @@ router.get("/", async (req, res) => {
         experience: obj.experience,
         available: obj.available,
         profileImageUrl: obj.profileImageUrl,
+        role: obj.role,
         __v: obj.__v,
       }))
     );
@@ -61,91 +79,120 @@ router.get("/", async (req, res) => {
     res.status(500).json({ error: "Database error" });
   }
 });
-
-// Create new carer (with optional image upload)
-router.post("/", upload.single("profileImage"), async (req, res) => {
-  try {
-    const { name, city, email, phone, availabilityDetails } = req.body;
-    let experience = req.body.experience;
-    let available = req.body.available;
-    let profileImageUrl = req.body.profileImageUrl || "";
-    let references: string[] = [];
-    if (Array.isArray(req.body.references)) {
-      references = req.body.references;
-    } else if (typeof req.body.references === "string") {
-      references = [req.body.references];
-    }
-
-    // If image upload was expected but failed
-    if (req.file === undefined && req.body.profileImageUrl === undefined) {
-      return res.status(400).json({ error: "No image uploaded" });
-    }
-
-    if (req.file) {
-      try {
-        // Resize image to max 400x400px and overwrite original
-        const filePath = path.join(UPLOADS_PATH, req.file.filename);
-        await sharp(filePath)
-          .resize(200, 200, { fit: "cover" })
-          .toFile(filePath + "_resized");
-        // Replace original with resized
-        const fs = await import("fs/promises");
-        await fs.unlink(filePath);
-        await fs.rename(filePath + "_resized", filePath);
-        profileImageUrl = `/uploads/${req.file.filename}`;
-      } catch (err) {
-        // Remove broken file if sharp fails
-        try {
-          const fs = await import("fs/promises");
-          await fs.unlink(path.join(UPLOADS_PATH, req.file.filename));
-        } catch {}
-        return res
-          .status(500)
-          .json({ error: "Image processing failed", details: err?.toString() });
+router.post(
+  "/",
+  authenticateJWT,
+  upload.single("profileImage"),
+  async (req, res) => {
+    try {
+      const { name, city, email, phone, availabilityDetails, role, diseases } =
+        req.body;
+      let experience = req.body.experience;
+      let available = req.body.available;
+      let profileImageUrl = req.body.profileImageUrl || "";
+      let references: string[] = [];
+      if (Array.isArray(req.body.references)) {
+        references = req.body.references;
+      } else if (typeof req.body.references === "string") {
+        references = [req.body.references];
       }
+
+      // If image upload was expected but failed
+      if (req.file === undefined && req.body.profileImageUrl === undefined) {
+        return res.status(400).json({ error: "No image uploaded" });
+      }
+
+      if (req.file) {
+        try {
+          // Resize image to max 400x400px and overwrite original
+          const filePath = path.join(UPLOADS_PATH, req.file.filename);
+          await sharp(filePath)
+            .resize(200, 200, { fit: "cover" })
+            .toFile(filePath + "_resized");
+          // Replace original with resized
+          const fsPromises = await import("fs/promises");
+          await fsPromises.unlink(filePath);
+          await fsPromises.rename(filePath + "_resized", filePath);
+          profileImageUrl = `/uploads/${req.file.filename}`;
+        } catch (err) {
+          // Remove broken file if sharp fails
+          try {
+            const fsPromises = await import("fs/promises");
+            await fsPromises.unlink(path.join(UPLOADS_PATH, req.file.filename));
+          } catch (e) {
+            // ignore file delete error
+          }
+          return res.status(500).json({
+            error: "Image processing failed",
+            details: err?.toString(),
+          });
+        }
+      }
+      // Validate required fields
+      if (!role) {
+        return res.status(400).json({ error: "Missing role" });
+      }
+      if (!name || !city) {
+        return res.status(400).json({ error: "Missing name or city" });
+      }
+      if (role === "pfleger") {
+        experience = Number(experience);
+        if (typeof available === "string") {
+          available = available === "true";
+        }
+        if (isNaN(experience) || typeof available !== "boolean") {
+          return res.status(400).json({ error: "Missing or invalid fields" });
+        }
+      }
+      if (
+        (role === "patient" || role === "relative") &&
+        (!diseases || diseases.length < 1)
+      ) {
+        return res
+          .status(400)
+          .json({ error: "Missing diseases for patient/relative" });
+      }
+      const newCarer = await createCarer({
+        name,
+        city,
+        experience: role === "pfleger" ? experience : undefined,
+        available: role === "pfleger" ? available : undefined,
+        profileImageUrl,
+        email,
+        phone,
+        references,
+        availabilityDetails,
+        role,
+        diseases:
+          role === "patient" || role === "relative" ? diseases : undefined,
+      });
+      const obj = newCarer.toObject();
+      if (obj.profileImageUrl && obj.profileImageUrl.startsWith("/uploads/")) {
+        const baseUrl = req.protocol + "://" + req.get("host");
+        obj.profileImageUrl = `${baseUrl}${obj.profileImageUrl}`;
+      }
+      res.status(201).json({
+        _id: obj._id,
+        name: obj.name,
+        city: obj.city,
+        experience: obj.experience,
+        available: obj.available,
+        profileImageUrl: obj.profileImageUrl,
+        email: obj.email,
+        phone: obj.phone,
+        references: obj.references,
+        availabilityDetails: obj.availabilityDetails,
+        role: obj.role,
+        diseases: obj.diseases,
+        __v: obj.__v,
+      });
+    } catch (err) {
+      res.status(500).json({ error: "Database error" });
     }
-    experience = Number(experience);
-    if (typeof available === "string") {
-      available = available === "true";
-    }
-    if (!name || !city || isNaN(experience) || typeof available !== "boolean") {
-      return res.status(400).json({ error: "Missing or invalid fields" });
-    }
-    const newCarer = await createCarer({
-      name,
-      city,
-      experience,
-      available,
-      profileImageUrl,
-      email,
-      phone,
-      references,
-      availabilityDetails,
-    });
-    const obj = newCarer.toObject();
-    if (obj.profileImageUrl && obj.profileImageUrl.startsWith("/uploads/")) {
-      const baseUrl = req.protocol + "://" + req.get("host");
-      obj.profileImageUrl = `${baseUrl}${obj.profileImageUrl}`;
-    }
-    res.status(201).json({
-      _id: obj._id,
-      name: obj.name,
-      city: obj.city,
-      experience: obj.experience,
-      available: obj.available,
-      profileImageUrl: obj.profileImageUrl,
-      email: obj.email,
-      phone: obj.phone,
-      references: obj.references,
-      availabilityDetails: obj.availabilityDetails,
-      __v: obj.__v,
-    });
-  } catch (err) {
-    res.status(500).json({ error: "Database error" });
   }
-});
-// Get single carer
-router.get("/:id", async (req, res) => {
+);
+// Get single carer (protected)
+router.get("/:id", authenticateJWT, async (req, res) => {
   try {
     const carer = await getCarerById(req.params.id);
     if (!carer) return res.status(404).json({ error: "Not found" });
@@ -180,8 +227,8 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// Update carer
-router.put("/:id", async (req, res) => {
+// Update carer (protected)
+router.put("/:id", authenticateJWT, async (req, res) => {
   try {
     const updated = await updateCarer(req.params.id, req.body);
     if (!updated) return res.status(404).json({ error: "Not found" });
@@ -191,8 +238,8 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-// Delete carer
-router.delete("/:id", async (req, res) => {
+// Delete carer (protected)
+router.delete("/:id", authenticateJWT, async (req, res) => {
   try {
     const deleted = await deleteCarer(req.params.id);
     if (!deleted) return res.status(404).json({ error: "Not found" });

@@ -14,5 +14,21 @@
     {
       "path": "./.nuxt/tsconfig.node.json"
     }
+  ],
+  "compilerOptions": {
+    "types": ["jest", "node"],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["pages/*"],
+      "~/*": ["src/*"]
+    }
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "pages/**/*.vue",
+    "tests/**/*.ts"
   ]
 }

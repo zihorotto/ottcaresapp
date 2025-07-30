@@ -10,6 +10,8 @@ const CarerSchema = new mongoose.Schema({
   phone: String,
   references: [String],
   availabilityDetails: String,
+  role: String, // 'pfleger', 'patient', 'relative'
+  diseases: String, // betegségek, támogatási igények (patient/relative)
 });
 
 export default mongoose.model("Carer", CarerSchema);

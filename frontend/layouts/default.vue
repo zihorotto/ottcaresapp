@@ -5,11 +5,21 @@
         <span>OttoCares</span>
       </NuxtLink>
       <nav class="sidebar-nav">
-        <NuxtLink to="/add-carer" class="sidebar-link"
-          >Neue Pflegekraft</NuxtLink
-        >
-        <NuxtLink to="/carers" class="sidebar-link">Pflegekraften</NuxtLink>
+        <template v-if="user">
+          <template v-if="hasProfile">
+            <NuxtLink to="/mein-profil" class="sidebar-link">Mein Profil</NuxtLink>
+          </template>
+          <template v-else>
+            <NuxtLink to="/neu_pflegekraft" class="sidebar-link">New Pflegekraft</NuxtLink>
+          </template>
+          <NuxtLink to="/carers" class="sidebar-link">Pflegekräfte</NuxtLink>
+        </template>
+        <template v-else> </template>
       </nav>
+      <div style="flex: 1 1 auto"></div>
+      <div v-if="user" class="sidebar-link sidebar-signout-wrap">
+        <button class="sidebar-link sidebar-signout-btn" @click="handleLogout">Abmelden</button>
+      </div>
     </aside>
     <main class="main-content">
       <slot />
@@ -19,7 +29,37 @@
 </template>
 
 <script setup>
-import GlobalChat from "~/components/GlobalChat.vue";
+import GlobalChat from '~/components/GlobalChat.vue';
+import { ref, onMounted } from 'vue';
+import { userManager, signOutRedirect } from '~/src/plugins/cognitoOidc';
+const user = ref(null);
+const hasProfile = ref(false);
+async function checkProfile() {
+  try {
+    const res = await fetch('/api/carers/me');
+    hasProfile.value = res.ok;
+  } catch {
+    hasProfile.value = false;
+  }
+}
+onMounted(async () => {
+  user.value = await userManager.getUser();
+  await checkProfile();
+  userManager.events.addUserLoaded(async (u) => {
+    user.value = u;
+    await checkProfile();
+  });
+  userManager.events.addUserUnloaded(() => {
+    user.value = null;
+    hasProfile.value = false;
+  });
+});
+function loginWithCognito() {
+  userManager.signinRedirect();
+}
+function handleLogout() {
+  signOutRedirect();
+}
 </script>
 
 <style scoped>
@@ -64,7 +104,9 @@ import GlobalChat from "~/components/GlobalChat.vue";
   text-decoration: none;
   padding: 0.7rem 1.2rem;
   border-radius: 0.7rem;
-  transition: background 0.18s, color 0.18s;
+  transition:
+    background 0.18s,
+    color 0.18s;
 }
 .sidebar-link:hover,
 .sidebar-link:focus {
@@ -120,3 +162,16 @@ import GlobalChat from "~/components/GlobalChat.vue";
   }
 }
 </style>
+
+.signout-fixed { position: fixed; top: 1.5rem; right: 2.5rem; z-index: 2000; } .signout-btn {
+padding: 0.5rem 1.5rem; font-size: 1rem; border-radius: 2rem; background: linear-gradient(90deg,
+#38bdf8 0%, #14b8a6 100%); color: #fff; font-weight: 600; border: none; box-shadow: 0 2px 8px 0
+rgba(20, 184, 166, 0.13); transition: background 0.2s, transform 0.2s; } .signout-btn:hover {
+background: linear-gradient(90deg, #14b8a6 0%, #38bdf8 100%); transform: translateY(-2px)
+scale(1.04); color: #fff; } .sidebar-signout { margin-top: auto; width: 100%; display: flex;
+justify-content: center; padding-top: 2rem; } .sidebar-signout-btn { width: 100%; text-align:
+center; background: linear-gradient(90deg, #38bdf8 0%, #14b8a6 100%); color: #fff; font-weight: 600;
+border: none; border-radius: 0.7rem; box-shadow: 0 2px 8px 0 rgba(20, 184, 166, 0.13); transition:
+background 0.2s, transform 0.2s; margin-bottom: 0.5rem; } .sidebar-signout-btn:hover { background:
+linear-gradient(90deg, #14b8a6 0%, #38bdf8 100%); color: #fff; transform: translateY(-2px)
+scale(1.04); }

@@ -1,0 +1,17 @@
+{
+  "welcome": "Willkommen bei",
+  "profile": "Profil",
+  "logout": "Abmelden",
+  "login": "Anmelden",
+  "loginWithCognito": "Mit Cognito anmelden",
+  "noAccount": "Noch kein Konto?",
+  "register": "Registrieren!",
+  "nameUnavailable": "Name nicht verfügbar",
+  "phone": "Telefon",
+  "registration": "Registrierung",
+  "notLoggedIn": "Du bist nicht angemeldet.",
+  "viewCarers": "Pflegekraften anzeigen",
+  "loginOidc": "Anmelden (OIDC)",
+  "addCarer": "Neue Pflegekraft",
+  "carers": "Pflegekraften"
+}

@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import CarerCard from "./CarerCard.vue";
+import CarerCard from './CarerCard.vue';
 defineProps<{ carers: any[] }>();
 </script>
 

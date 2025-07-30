@@ -15,10 +15,7 @@
     >
       <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
         <circle cx="20" cy="20" r="20" fill="#e0f2fe" />
-        <path
-          d="M20 22c-4.418 0-8 1.79-8 4v2h16v-2c0-2.21-3.582-4-8-4z"
-          fill="#38bdf8"
-        />
+        <path d="M20 22c-4.418 0-8 1.79-8 4v2h16v-2c0-2.21-3.582-4-8-4z" fill="#38bdf8" />
         <circle cx="20" cy="15" r="5" fill="#14b8a6" />
       </svg>
     </div>
@@ -26,14 +23,12 @@
       {{ carer.name }}
     </h2>
     <p class="text-gray-600 mb-1 text-center">{{ carer.city }}</p>
-    <p class="text-gray-500 mb-2 text-center">
-      {{ carer.experience }} Jahre Erfahrung
-    </p>
+    <p class="text-gray-500 mb-2 text-center">{{ carer.experience }} Jahre Erfahrung</p>
     <p
       :class="carer.available ? 'text-green-600' : 'text-red-600'"
       class="font-semibold mb-2 text-center"
     >
-      {{ carer.available ? "Verfügbar" : "Nicht verfügbar" }}
+      {{ carer.available ? 'Verfügbar' : 'Nicht verfügbar' }}
     </p>
     <NuxtLink :to="`/carer/${carer._id}`" class="modern-btn small-btn">
       <span>Profil anzeigen</span>
@@ -47,7 +42,9 @@ defineProps<{ carer: any }>();
 
 <style scoped>
 .carer-card {
-  transition: transform 0.18s, box-shadow 0.18s;
+  transition:
+    transform 0.18s,
+    box-shadow 0.18s;
   width: 100%;
   max-width: 420px;
   min-width: 320px;
@@ -78,7 +75,10 @@ defineProps<{ carer: any }>();
   box-shadow: 0 4px 16px 0 rgba(124, 58, 237, 0.18);
   border: none;
   cursor: pointer;
-  transition: transform 0.15s, box-shadow 0.15s, background 0.2s;
+  transition:
+    transform 0.15s,
+    box-shadow 0.15s,
+    background 0.2s;
   outline: none;
   position: relative;
   overflow: hidden;

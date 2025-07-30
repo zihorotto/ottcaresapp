@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div class="global-chat-title">Global Chat</div>
     <div
       v-for="(chat, idx) in chats"
       :key="chat.name"
@@ -18,17 +19,15 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
-import ChatBox from "~/components/ChatBox.vue";
+import { ref, onMounted } from 'vue';
+import ChatBox from '~/components/ChatBox.vue';
 const chats = ref([]);
 
 function closeChat(idx) {
   chats.value.splice(idx, 1);
 }
 function getChats() {
-  const keys = Object.keys(localStorage).filter((k) =>
-    k.startsWith("carer-chat-")
-  );
+  const keys = Object.keys(localStorage).filter((k) => k.startsWith('carer-chat-'));
   let chatList = [];
   let idx = 0;
   for (const key of keys) {
@@ -42,7 +41,7 @@ function getChats() {
         messages.some((m) => m && m.length > 0)
       ) {
         chatList.push({
-          name: key.replace("carer-chat-", ""),
+          name: key.replace('carer-chat-', ''),
           index: idx++,
           active: false,
         });
@@ -88,8 +87,10 @@ onMounted(() => {
   margin-left: 0.5rem;
   margin-bottom: 8px;
   cursor: pointer;
-  box-shadow: 0 2px 8px 0 rgba(124,58,237,0.08);
-  transition: background 0.18s, color 0.18s;
+  box-shadow: 0 2px 8px 0 rgba(124, 58, 237, 0.08);
+  transition:
+    background 0.18s,
+    color 0.18s;
 }
 .close-btn:hover {
   background: #ef4444;

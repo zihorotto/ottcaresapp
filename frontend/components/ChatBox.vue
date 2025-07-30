@@ -2,12 +2,7 @@
   <div v-if="!minimized" class="chat-container glass-card">
     <div class="chat-header" @click="$emit('minimize')">
       <span class="chat-header-content">
-        <svg
-          class="chat-header-icon"
-          width="20"
-          height="20"
-          viewBox="0 0 24 24"
-        >
+        <svg class="chat-header-icon" width="20" height="20" viewBox="0 0 24 24">
           <path
             fill="#38bdf8"
             d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
@@ -44,16 +39,25 @@
 </template>
 
 <script setup>
-const props = defineProps({ minimized: Boolean, name: String });
+const props = defineProps({
+  minimized: Boolean,
+  name: String,
+  carerId: String,
+  userId: String,
+});
+import { ref, onMounted } from 'vue';
 const messages = ref([]);
-const input = ref("");
+const input = ref('');
 const loading = ref(false);
 
-const API_URL = "http://16.171.144.204:3001/api/chat";
+const API_URL = 'http://16.171.144.204:3001/api/chat';
+function getChatUrl() {
+  return `${API_URL}/${props.carerId}/${props.userId}`;
+}
 async function fetchMessages() {
   loading.value = true;
   try {
-    const res = await fetch(`${API_URL}/${props.name}`);
+    const res = await fetch(getChatUrl());
     if (res.ok) {
       const data = await res.json();
       messages.value = data.map((m) => m.message);
@@ -65,15 +69,15 @@ async function fetchMessages() {
 async function sendMessage() {
   if (input.value.trim()) {
     try {
-      const res = await fetch(`${API_URL}/${props.name}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ sender: "user", message: input.value }),
+      const res = await fetch(getChatUrl(), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sender: props.userId, message: input.value }),
       });
       if (res.ok) {
         const msg = await res.json();
         messages.value.push(msg.message);
-        input.value = "";
+        input.value = '';
       }
     } catch {}
   }
@@ -81,7 +85,7 @@ async function sendMessage() {
 
 async function deleteMessages() {
   try {
-    const res = await fetch(`${API_URL}/${props.name}`, { method: "DELETE" });
+    const res = await fetch(`${API_URL}/${props.name}`, { method: 'DELETE' });
     if (res.ok) messages.value = [];
   } catch {}
 }
@@ -181,7 +185,7 @@ onMounted(() => {
   display: flex;
   gap: 0.5rem;
 }
-input[type="text"] {
+input[type='text'] {
   flex: 1;
   padding: 0.5rem;
   border-radius: 0.5rem;

@@ -3,7 +3,39 @@ import ChatMessage from "../models/ChatMessage";
 
 const router = Router();
 
-// Get all messages for a carer
+// Get all messages for a carer-user pair
+router.get("/:carerId/:userId", async (req, res) => {
+  try {
+    const { carerId, userId } = req.params;
+    const messages = await ChatMessage.find({
+      carerId,
+      $or: [{ sender: userId }, { sender: carerId }],
+    }).sort({ timestamp: 1 });
+    res.json(messages);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch messages" });
+  }
+});
+
+// Add a new message for a carer-user pair
+router.post("/:carerId/:userId", async (req, res) => {
+  try {
+    const { carerId } = req.params;
+    const { sender, message } = req.body;
+    const chatMsg = new ChatMessage({
+      carerId,
+      sender,
+      message,
+      timestamp: new Date(),
+    });
+    await chatMsg.save();
+    res.status(201).json(chatMsg);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to save message" });
+  }
+});
+
+// (Optional) Keep old endpoints for backward compatibility
 router.get("/:carerId", async (req, res) => {
   try {
     const messages = await ChatMessage.find({
@@ -15,7 +47,6 @@ router.get("/:carerId", async (req, res) => {
   }
 });
 
-// Add a new message
 router.post("/:carerId", async (req, res) => {
   try {
     const { sender, message } = req.body;
@@ -32,7 +63,6 @@ router.post("/:carerId", async (req, res) => {
   }
 });
 
-// Delete all messages for a carer
 router.delete("/:carerId", async (req, res) => {
   try {
     await ChatMessage.deleteMany({ carerId: req.params.carerId });

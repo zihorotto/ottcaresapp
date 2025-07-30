@@ -1,9 +1,11 @@
+/* eslint-disable no-undef */
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
 import carerRoutes from "./routes/carers";
 import chatRoutes from "./routes/chat";
+import profileRoutes from "./routes/profile";
 import http from "http";
 import { Server as SocketIOServer } from "socket.io";
 
@@ -35,6 +37,7 @@ app.use("/uploads", (req, res, next) => {
 app.use("/uploads", express.static(UPLOADS_PATH));
 app.use("/api/carers", carerRoutes);
 app.use("/api/chat", chatRoutes);
+app.use("/api/profile", profileRoutes);
 
 // --- Socket.io Chat Events ---
 io.on("connection", (socket: import("socket.io").Socket) => {
@@ -51,11 +54,11 @@ io.on("connection", (socket: import("socket.io").Socket) => {
 });
 
 mongoose
-  .connect("mongodb://localhost:27017/noracares")
+  .connect("mongodb://16.171.144.204:27017/noracares")
   .then(() => {
     console.log("MongoDB connected");
     server.listen(PORT, () =>
-      console.log(`Server running on http://localhost:${PORT}`)
+      console.log(`Server running on http://16.171.144.204:${PORT}`)
     );
   })
   .catch((err) => console.error(err));

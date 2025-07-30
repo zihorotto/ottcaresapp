@@ -7,11 +7,55 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "lint:js": "eslint --ext .js,.ts,.vue src",
+    "lint:style": "stylelint '**/*.{css,scss,sass,vue}'",
+    "format": "prettier --write '**/*.{js,ts,vue,json,css,scss,md}'",
+    "prepare": "husky install",
+    "commit": "cz"
   },
   "dependencies": {
+    "@aws-amplify/ui-vue": "^4.3.3",
+    "aws-amplify": "^6.15.4",
+    "axios": "^1.11.0",
+    "http-proxy-middleware": "^3.0.5",
     "nuxt": "^4.0.0",
+    "oidc-client-ts": "^3.3.0",
     "vue": "^3.5.17",
     "vue-router": "^4.5.1"
+  },
+  "devDependencies": {
+    "@testing-library/vue": "^8.1.0",
+    "@types/jest": "^30.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.38.0",
+    "@typescript-eslint/parser": "^8.38.0",
+    "@vitest/ui": "^3.2.4",
+    "@vue/test-utils": "^2.4.6",
+    "commitizen": "^4.3.1",
+    "cz-conventional-changelog": "^3.3.0",
+    "eslint": "^9.32.0",
+    "eslint-plugin-vue": "^9.0.0",
+    "husky": "^9.1.7",
+    "jest": "^30.0.5",
+    "jest-environment-jsdom": "^30.0.5",
+    "jsdom": "^26.1.0",
+    "lint-staged": "^16.1.2",
+    "prettier": "^3.6.2",
+    "stylelint": "^16.23.0",
+    "stylelint-config-recommended-vue": "^1.6.1",
+    "stylelint-config-standard": "^32.0.0",
+    "ts-jest": "^29.4.0",
+    "vitest": "^3.2.4"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint:js && npm run lint:style && npm run format",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
