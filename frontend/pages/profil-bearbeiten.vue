@@ -31,8 +31,13 @@ const router = useRouter();
 
 async function fetchProfile() {
   try {
-    // Adjust the endpoint as needed for your backend
-    const res = await axios.get('/carers/me');
+    const userManager = createUserManager();
+    const user = await userManager.getUser();
+    const idToken = user?.id_token;
+    if (!idToken) throw new Error('No id_token');
+    const res = await axios.get('/carers/me', {
+      headers: { Authorization: `Bearer ${idToken}` },
+    });
     profile.value = res.data;
   } catch (e) {
     profile.value = null;
