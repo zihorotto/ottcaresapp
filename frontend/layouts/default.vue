@@ -68,7 +68,11 @@ onMounted(async () => {
     try {
       const saved = localStorage.getItem(key);
       const messages = JSON.parse(saved);
-      if (Array.isArray(messages) && messages.length > 0 && messages.some((m) => m && m.length > 0)) {
+      if (
+        Array.isArray(messages) &&
+        messages.length > 0 &&
+        messages.some((m) => m && m.length > 0)
+      ) {
         hasChats = true;
         break;
       }
