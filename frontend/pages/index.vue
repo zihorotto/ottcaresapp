@@ -81,10 +81,11 @@
 
 <script setup>
 import { useRouter } from 'vue-router';
-import { userManager } from '~/src/plugins/cognitoOidc';
+import { createUserManager } from '~/src/plugins/cognitoOidc';
 const user = ref(null);
 const router = useRouter();
 onMounted(async () => {
+  const userManager = createUserManager();
   user.value = await userManager.getUser();
   if (user.value) {
     const role = localStorage.getItem('userRole');
@@ -94,6 +95,7 @@ onMounted(async () => {
   }
 });
 function handleLogin() {
+  const userManager = createUserManager();
   userManager.signinRedirect();
 }
 </script>

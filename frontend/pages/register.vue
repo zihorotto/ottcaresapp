@@ -19,13 +19,14 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { userManager } from '~/src/plugins/cognitoOidc';
+import { createUserManager } from '~/src/plugins/cognitoOidc';
 
 const role = ref('');
 
 function registerWithCognito() {
   if (!role.value) return;
   localStorage.setItem('userRole', role.value);
+  const userManager = createUserManager();
   userManager.signinRedirect(); // Cognito hosted UI regisztrációhoz
 }
 </script>

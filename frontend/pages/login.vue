@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-import { userManager } from '~/src/plugins/cognitoOidc';
+import { createUserManager } from '~/src/plugins/cognitoOidc';
 import { useRouter } from 'vue-router';
 const router = useRouter();
 
@@ -15,7 +15,7 @@ onMounted(() => {
   if (process.client) {
     const url = new URL(window.location.href);
     if (url.searchParams.has('code') && url.searchParams.has('state')) {
-      userManager
+      createUserManager()
         .signinRedirectCallback()
         .then(() => {
           router.push('/');
@@ -29,6 +29,7 @@ onMounted(() => {
 });
 
 function loginWithCognito() {
+  const userManager = createUserManager();
   userManager.signinRedirect();
 }
 </script>

@@ -11,10 +11,11 @@ import AnimatedBg from '~/components/AnimatedBg.vue';
 definePageMeta({ layout: 'default' });
 import { ref } from 'vue';
 import CarerList from '~/components/CarerList.vue';
-import { userManager, signOutRedirect } from '~/src/plugins/cognitoOidc';
+import { createUserManager, signOutRedirect } from '~/src/plugins/cognitoOidc';
 const carers = ref([]);
 
 function handleLogin() {
+  const userManager = createUserManager();
   userManager.signinRedirect();
 }
 function handleLogout() {
@@ -22,6 +23,7 @@ function handleLogout() {
 }
 
 async function fetchCarers() {
+  const userManager = createUserManager();
   const user = await userManager.getUser();
   if (!user) return;
   const res = await fetch('https://16.171.144.204/carers', {

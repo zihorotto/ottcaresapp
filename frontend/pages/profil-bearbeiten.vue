@@ -21,7 +21,7 @@ import AnimatedBg from '~/components/AnimatedBg.vue';
 import CarerForm from '~/components/CarerForm.vue';
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { userManager, signOutRedirect } from '~/src/plugins/cognitoOidc';
+import { createUserManager, signOutRedirect } from '~/src/plugins/cognitoOidc';
 import axios from 'axios';
 
 const success = ref(false);
@@ -55,6 +55,7 @@ function handleCreated() {
   router.push('/mein-profil');
 }
 function handleLogin() {
+  const userManager = createUserManager();
   userManager.signinRedirect();
 }
 function handleLogout() {

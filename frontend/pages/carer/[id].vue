@@ -112,7 +112,7 @@ import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import AnimatedBg from '~/components/AnimatedBg.vue';
 import ChatBox from '~/components/ChatBox.vue';
-import { userManager } from '~/src/plugins/cognitoOidc';
+import { createUserManager } from '~/src/plugins/cognitoOidc';
 const route = useRoute();
 const carer = ref({
   name: '',
@@ -131,6 +131,7 @@ const userId = ref('');
 
 onMounted(async () => {
   // Get current user and token
+  const userManager = createUserManager();
   const user = await userManager.getUser();
   userId.value = user?.profile?.email || user?.profile?.sub || 'guest';
   let token = user?.access_token || user?.id_token;
