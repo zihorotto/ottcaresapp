@@ -57,15 +57,15 @@ mongoose
   .connect("mongodb://localhost:27017/noracares")
   .then(() => {
     console.log("MongoDB connected");
-    server.listen(PORT, () =>
-      console.log(`Server running on https://16.171.144.204`)
-    );
+      server.listen(PORT, "0.0.0.0", () =>
+        console.log(`Server running on http://16.171.144.204:${PORT}`)
+      );
   })
   .catch((err) => {
     console.error("MongoDB connection error:", err);
     // Indítsuk el a szervert akkor is, ha nincs DB, hogy lásd a hibát HTTP-n keresztül
-    server.listen(PORT, () => {
-      console.log(`Server running in DB ERROR MODE on https://16.171.144.204`);
+    server.listen(PORT, "0.0.0.0", () => {
+      console.log(`Server running in DB ERROR MODE on http://16.171.144.204:${PORT}`);
     });
     app.use((req, res, next) => {
       res
