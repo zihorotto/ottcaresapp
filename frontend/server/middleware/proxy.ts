@@ -1,4 +1,6 @@
 import { createProxyMiddleware } from 'http-proxy-middleware';
+import { defineEventHandler } from 'h3';
+
 export default defineEventHandler(async (event) => {
   // Only proxy /api requests
   if (event.node.req.url?.startsWith('/api')) {

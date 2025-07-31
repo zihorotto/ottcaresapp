@@ -28,7 +28,7 @@ async function fetchCarers() {
     headers: { Authorization: `Bearer ${user.id_token}` },
   });
   const allCarers = await res.json();
-  carers.value = allCarers.filter((c) => c.role === 'pfleger');
+  carers.value = allCarers;
 }
 
 fetchCarers();

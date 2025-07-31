@@ -1,9 +1,11 @@
+/* global process */
 import { UserManager } from 'oidc-client-ts';
 
 const cognitoAuthConfig = {
-  authority: 'https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_nBg4KfCJj',
-  client_id: '39tjt5db7e27m63grnidcf57o2',
-  redirect_uri: 'https://16.171.144.204/login',
+  // eslint-disable-next-line no-undef
+  authority: process.env.NUXT_PUBLIC_COGNITO_AUTHORITY || '',
+  client_id: process.env.NUXT_PUBLIC_COGNITO_CLIENT_ID || '',
+  redirect_uri: process.env.NUXT_PUBLIC_COGNITO_REDIRECT_URI || '',
   response_type: 'code',
   scope: 'phone openid email',
 };
@@ -16,9 +18,9 @@ export const userManager = new UserManager({
 export async function signOutRedirect() {
   // Remove local session
   await userManager.removeUser();
-  const clientId = '39tjt5db7e27m63grnidcf57o2';
-  const logoutUri = 'https://16.171.144.204/';
-  const cognitoDomain = 'https://eu-north-1nbg4kfcjj.auth.eu-north-1.amazoncognito.com';
+  const clientId = process.env.NUXT_PUBLIC_COGNITO_CLIENT_ID || '';
+  const logoutUri = process.env.NUXT_PUBLIC_COGNITO_LOGOUT_URI || '';
+  const cognitoDomain = process.env.NUXT_PUBLIC_COGNITO_DOMAIN || '';
   // eslint-disable-next-line no-undef
   window.location.href = `${cognitoDomain}/logout?client_id=${clientId}&logout_uri=${encodeURIComponent(
     logoutUri,

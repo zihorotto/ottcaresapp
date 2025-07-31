@@ -16,7 +16,6 @@ export default [
       },
     },
     rules: {
-      // Saját szabályok ide jöhetnek
     },
   },
 ];

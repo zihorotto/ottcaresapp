@@ -20,6 +20,17 @@ jobs:
           source: "."
           target: "/home/ubuntu/app"
 
+      - name: Generate .env for frontend and backend
+        run: |
+          for DIR in frontend backend; do
+            echo "NUXT_PUBLIC_COGNITO_AUTHORITY=${{ secrets.NUXT_PUBLIC_COGNITO_AUTHORITY }}" > $DIR/.env
+            echo "NUXT_PUBLIC_COGNITO_CLIENT_ID=${{ secrets.NUXT_PUBLIC_COGNITO_CLIENT_ID }}" >> $DIR/.env
+            echo "NUXT_PUBLIC_COGNITO_DOMAIN=${{ secrets.NUXT_PUBLIC_COGNITO_DOMAIN }}" >> $DIR/.env
+            echo "NUXT_PUBLIC_COGNITO_LOGOUT_URI=${{ secrets.NUXT_PUBLIC_COGNITO_LOGOUT_URI }}" >> $DIR/.env
+            echo "NUXT_PUBLIC_COGNITO_REDIRECT_URI=${{ secrets.NUXT_PUBLIC_COGNITO_REDIRECT_URI }}" >> $DIR/.env
+          done
+        shell: bash
+
       - name: SSH commands on EC2
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -28,7 +39,6 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             cd /home/ubuntu/app
-            # Ha a root package.json üres vagy nem kell, töröljük
             if [ -f package.json ]; then
               if [ ! -s package.json ]; then rm package.json; fi
             fi
@@ -37,7 +47,6 @@ jobs:
             docker compose pull
             docker compose up -d --build
 
-            # Node.js verzió frissítés (nvm-mel, ha kell)
             export NVM_DIR="$HOME/.nvm"
             if [ ! -d "$NVM_DIR" ]; then
               curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
@@ -49,12 +58,12 @@ jobs:
             nvm use 22
             nvm alias default 22
 
-            # Backend telepítés és indítás hoston (nem dockerben)
+            # Backend-Installation und Start auf dem Host (nicht im Docker)
             cd backend
             npm install --legacy-peer-deps
             pm2 restart backend || pm2 start npm --name "backend" -- run dev
 
-            # Frontend telepítés, build és indítás
+            # Frontend-Installation, -Erstellung und -Start
             cd ../frontend
             rm -rf node_modules package-lock.json
             npm cache clean --force

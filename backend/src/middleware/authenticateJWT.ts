@@ -1,10 +1,11 @@
+/* global process */
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 // @ts-ignore
 import jwksClient from "jwks-rsa";
 
-const cognitoPoolId = "eu-north-1_nBg4KfCJj"
-const cognitoRegion = "eu-north-1";
+const cognitoPoolId = process.env.COGNITO_POOL_ID || '';
+const cognitoRegion = process.env.COGNITO_REGION || '';
 const cognitoIssuer = `https://cognito-idp.${cognitoRegion}.amazonaws.com/${cognitoPoolId}`;
 
 const client = jwksClient({

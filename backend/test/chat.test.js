@@ -17,7 +17,7 @@ app.use(express.json());
 app.use("/chat", chatRoutes);
 
 describe("Chat API", () => {
-  it("GET /chat/:carerId/:userId should return 200 vagy 500 és tömb vagy hibaüzenet (mockolt)", async () => {
+  it("GET /chat/:carerId/:userId should return 200 or 500 and array or error (mocked)", async () => {
     const res = await request(app).get("/chat/testcarer/testuser");
     expect([200, 500]).toContain(res.statusCode);
     if (res.statusCode === 200) {
@@ -27,7 +27,7 @@ describe("Chat API", () => {
     }
   });
 
-  it("POST /chat/:carerId/:userId should return 201 és visszaadja az üzenetet (mockolt)", async () => {
+  it("POST /chat/:carerId/:userId should return 201 and echo the message (mocked)", async () => {
     // Mock save method
     const mockMsg = {
       _id: "1",

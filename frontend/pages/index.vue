@@ -20,7 +20,7 @@
           </svg>
         </div>
         <h1 class="text-5xl font-extrabold text-cyan-700 mb-6 drop-shadow-xl">
-          Welcome to <span class="gradient-text">OttoCares</span>!
+          Willkommen bei <span class="gradient-text">OttoCares</span>!
         </h1>
         <NuxtLink v-if="user" to="/carers" class="glow-btn mt-6">
           <span>Pflegekräfte suchen</span>
