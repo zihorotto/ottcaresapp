@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 // @ts-ignore
 import jwksClient from "jwks-rsa";
 
+
 const cognitoPoolId = process.env.COGNITO_POOL_ID || '';
 const cognitoRegion = process.env.COGNITO_REGION || '';
 const cognitoIssuer = `https://cognito-idp.${cognitoRegion}.amazonaws.com/${cognitoPoolId}`;
