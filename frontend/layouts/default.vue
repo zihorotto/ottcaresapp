@@ -7,12 +7,14 @@
       <nav class="sidebar-nav">
         <template v-if="user">
           <template v-if="hasProfile">
+            <NuxtLink to="/neu_pflegekraft" class="sidebar-link">New Pflegekraft</NuxtLink>
+            <NuxtLink to="/carers" class="sidebar-link">Pflegekräfte</NuxtLink>
             <NuxtLink to="/mein-profil" class="sidebar-link">Mein Profil</NuxtLink>
           </template>
           <template v-else>
             <NuxtLink to="/neu_pflegekraft" class="sidebar-link">New Pflegekraft</NuxtLink>
+            <NuxtLink to="/carers" class="sidebar-link">Pflegekräfte</NuxtLink>
           </template>
-          <NuxtLink to="/carers" class="sidebar-link">Pflegekräfte</NuxtLink>
         </template>
         <template v-else> </template>
       </nav>
@@ -24,7 +26,7 @@
     <main class="main-content">
       <slot />
     </main>
-    <GlobalChat />
+    <GlobalChat v-if="showGlobalChat" />
   </div>
 </template>
 
@@ -35,6 +37,8 @@ import { createUserManager, signOutRedirect } from '~/src/plugins/cognitoOidc';
 const user = ref(null);
 const hasProfile = ref(false);
 let userManager;
+const showGlobalChat = ref(false);
+
 async function checkProfile() {
   try {
     const res = await fetch('/carers/me');
@@ -43,6 +47,7 @@ async function checkProfile() {
     hasProfile.value = false;
   }
 }
+
 onMounted(async () => {
   userManager = createUserManager();
   user.value = await userManager.getUser();
@@ -55,7 +60,23 @@ onMounted(async () => {
     user.value = null;
     hasProfile.value = false;
   });
+
+  // Check if there are any chats in localStorage for GlobalChat
+  const keys = Object.keys(localStorage).filter((k) => k.startsWith('carer-chat-'));
+  let hasChats = false;
+  for (const key of keys) {
+    try {
+      const saved = localStorage.getItem(key);
+      const messages = JSON.parse(saved);
+      if (Array.isArray(messages) && messages.length > 0 && messages.some((m) => m && m.length > 0)) {
+        hasChats = true;
+        break;
+      }
+    } catch {}
+  }
+  showGlobalChat.value = hasChats;
 });
+
 function loginWithCognito() {
   userManager.signinRedirect();
 }
