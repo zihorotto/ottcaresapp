@@ -58,12 +58,12 @@ jobs:
             nvm use 22
             nvm alias default 22
 
-            # Backend-Installation und Start auf dem Host (nicht im Docker)
+            # Backend install & start (host, not Docker)
             cd backend
             npm install --legacy-peer-deps
             pm2 restart backend || pm2 start npm --name "backend" -- run dev
 
-            # Frontend-Installation, -Erstellung und -Start
+            # Frontend install & build: a .env-ből épül a Nuxt!
             cd ../frontend
             rm -rf node_modules package-lock.json
             npm cache clean --force

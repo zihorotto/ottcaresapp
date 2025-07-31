@@ -1,8 +1,8 @@
 /* global process */
 import { UserManager } from 'oidc-client-ts';
 
+console.log('NUXT_PUBLIC_COGNITO_AUTHORITY:', process.env.NUXT_PUBLIC_COGNITO_AUTHORITY);
 const cognitoAuthConfig = {
-  // eslint-disable-next-line no-undef
   authority: process.env.NUXT_PUBLIC_COGNITO_AUTHORITY || '',
   client_id: process.env.NUXT_PUBLIC_COGNITO_CLIENT_ID || '',
   redirect_uri: process.env.NUXT_PUBLIC_COGNITO_REDIRECT_URI || '',
