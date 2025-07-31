@@ -54,7 +54,7 @@ io.on("connection", (socket: import("socket.io").Socket) => {
 });
 
 mongoose
-  .connect("mongodb://16.171.144.204:27017/noracares")
+  .connect("mongodb://localhost:27017/noracares")
   .then(() => {
     console.log("MongoDB connected");
     server.listen(PORT, () =>
