@@ -8,9 +8,24 @@ import chatRoutes from "./routes/chat";
 import profileRoutes from "./routes/profile";
 import http from "http";
 import { Server as SocketIOServer } from "socket.io";
+import session from "express-session";
+
+const app = express();
+
+app.use(
+  session({
+    secret: "supersecretkey",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: true,
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24,
+    },
+  })
+);
 
 dotenv.config();
-const app = express();
 const server = http.createServer(app);
 const io = new SocketIOServer(server, {
   cors: {
@@ -57,15 +72,17 @@ mongoose
   .connect("mongodb://localhost:27017/noracares")
   .then(() => {
     console.log("MongoDB connected");
-      server.listen(PORT, "0.0.0.0", () =>
-        console.log(`Server running on http://16.171.144.204:${PORT}`)
-      );
+    server.listen(PORT, "0.0.0.0", () =>
+      console.log(`Server running on http://16.171.144.204:${PORT}`)
+    );
   })
   .catch((err) => {
     console.error("MongoDB connection error:", err);
     // Indítsuk el a szervert akkor is, ha nincs DB, hogy lásd a hibát HTTP-n keresztül
     server.listen(PORT, "0.0.0.0", () => {
-      console.log(`Server running in DB ERROR MODE on http://16.171.144.204:${PORT}`);
+      console.log(
+        `Server running in DB ERROR MODE on http://16.171.144.204:${PORT}`
+      );
     });
     app.use((req, res, next) => {
       res

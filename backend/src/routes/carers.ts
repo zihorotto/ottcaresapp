@@ -1,3 +1,9 @@
+function requireLogin(req: any, res : any, next : any) {
+  if (req.session && req.session.user) {
+    return next();
+  }
+  return res.status(401).json({ error: "Not authenticated" });
+}
 // All import statements at the top
 import { Router } from "express";
 import { authenticateJWT } from "../middleware/authenticateJWT";
@@ -15,8 +21,8 @@ import {
 
 const router = Router();
 
-// Get current user's carer profile (protected)
-router.get("/me", authenticateJWT, async (req, res) => {
+// Get current user's carer profile (public)
+router.get("/me", async (req, res) => {
   try {
     // Email from JWT (Cognito)
     const user = (req as any).user;
@@ -46,8 +52,8 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// Get all carers (protected)
-router.get("/", authenticateJWT, async (req, res) => {
+// Get all carers (require login)
+router.get("/", requireLogin, async (req, res) => {
   try {
     const carers = await getAllCarers();
     const baseUrl = req.protocol + "://" + req.get("host");
@@ -81,7 +87,7 @@ router.get("/", authenticateJWT, async (req, res) => {
 });
 router.post(
   "/",
-  authenticateJWT,
+  requireLogin,
   upload.single("profileImage"),
   async (req, res) => {
     try {
