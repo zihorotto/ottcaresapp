@@ -31,9 +31,10 @@
 <script setup>
 import GlobalChat from '~/components/GlobalChat.vue';
 import { ref, onMounted } from 'vue';
-import { userManager, signOutRedirect } from '~/src/plugins/cognitoOidc';
+import { createUserManager, signOutRedirect } from '~/src/plugins/cognitoOidc';
 const user = ref(null);
 const hasProfile = ref(false);
+let userManager;
 async function checkProfile() {
   try {
     const res = await fetch('/carers/me');
@@ -43,6 +44,7 @@ async function checkProfile() {
   }
 }
 onMounted(async () => {
+  userManager = createUserManager();
   user.value = await userManager.getUser();
   await checkProfile();
   userManager.events.addUserLoaded(async (u) => {
