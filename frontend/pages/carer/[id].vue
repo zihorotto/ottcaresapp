@@ -136,7 +136,7 @@ onMounted(async () => {
   userId.value = user?.profile?.email || user?.profile?.sub || 'guest';
   let token = user?.access_token || user?.id_token;
   const res = await fetch(
-    `https://16.171.144.204/carers/${route.params.id}`,
+    `/api/carers/${route.params.id}`,
     token
       ? {
           headers: {

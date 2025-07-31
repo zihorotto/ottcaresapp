@@ -41,7 +41,16 @@ const showGlobalChat = ref(false);
 
 async function checkProfile() {
   try {
-    const res = await fetch('/carers/me');
+    const userManager = createUserManager();
+    const user = await userManager.getUser();
+    const idToken = user?.id_token;
+    if (!idToken) {
+      hasProfile.value = false;
+      return;
+    }
+    const res = await fetch('/api/carers/me', {
+      headers: { Authorization: `Bearer ${idToken}` },
+    });
     hasProfile.value = res.ok;
   } catch {
     hasProfile.value = false;
