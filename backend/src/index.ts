@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import carerRoutes from "./routes/carers";
 import chatRoutes from "./routes/chat";
 import profileRoutes from "./routes/profile";
+import authRoutes from "./routes/auth";
 import http from "http";
 import { Server as SocketIOServer } from "socket.io";
 import session from "express-session";
@@ -53,6 +54,7 @@ app.use("/uploads", express.static(UPLOADS_PATH));
 app.use("/carers", carerRoutes);
 app.use("/chat", chatRoutes);
 app.use("/profile", profileRoutes);
+app.use("/api/auth", authRoutes);
 
 // --- Socket.io Chat Events ---
 io.on("connection", (socket: import("socket.io").Socket) => {
@@ -73,7 +75,7 @@ mongoose
   .then(() => {
     console.log("MongoDB connected");
     server.listen(PORT, "0.0.0.0", () =>
-      console.log(`Server running on http://16.171.144.204:${PORT}`)
+      console.log(`Server running on https://16.171.144.204:${PORT}`)
     );
   })
   .catch((err) => {
@@ -81,7 +83,7 @@ mongoose
     // Indítsuk el a szervert akkor is, ha nincs DB, hogy lásd a hibát HTTP-n keresztül
     server.listen(PORT, "0.0.0.0", () => {
       console.log(
-        `Server running in DB ERROR MODE on http://16.171.144.204:${PORT}`
+        `Server running in DB ERROR MODE on https://16.171.144.204:${PORT}`
       );
     });
     app.use((req, res, next) => {
