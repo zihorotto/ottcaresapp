@@ -13,6 +13,7 @@ export function createUserManager() {
   return new UserManager({ ...cognitoAuthConfig });
 }
 
+
 export async function signOutRedirect() {
   const userManager = createUserManager();
   await userManager.removeUser();
