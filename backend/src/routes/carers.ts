@@ -18,15 +18,28 @@ const router = Router();
 // Get current user's carer profile (public)
 router.get("/me", authenticateJWT, async (req, res) => {
   try {
-    // Return the raw access token from the Authorization header
-    const authHeader =
-      req.headers["authorization"] || req.headers["Authorization"];
-    if (!authHeader || typeof authHeader !== "string") {
-      return res.status(401).json({ error: "No Authorization header" });
+    const user = (req as any).user;
+    if (!user) {
+      return res.status(401).json({ error: "No user info in token" });
     }
-    const token = authHeader.replace(/^Bearer /i, "");
-    if (!token) return res.status(401).json({ error: "No access token found" });
-    res.json({ accessToken: token });
+    // Try to find carer profile by email (or sub if that's the unique id)
+    let carer = null;
+    if (user.email) {
+      const allCarers = await getAllCarers();
+      carer = allCarers.find((c: any) => c.email === user.email);
+    } else if (user.sub) {
+      const allCarers = await getAllCarers();
+      carer = allCarers.find((c: any) => c.sub === user.sub);
+    }
+    let carerObj = null;
+    if (carer) {
+      carerObj = carer.toObject ? carer.toObject() : { ...carer };
+      // Remove _id from carer object
+      if (carerObj && typeof carerObj === "object" && "_id" in carerObj) {
+        delete (carerObj as any)._id;
+      }
+    }
+    res.json({ user, carer: carerObj });
   } catch (err) {
     res.status(500).json({ error: "Server error" });
   }
