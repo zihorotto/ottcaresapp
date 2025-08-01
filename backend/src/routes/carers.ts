@@ -50,7 +50,7 @@ const upload = multer({ storage });
 router.get("/", authenticateJWT, async (req, res) => {
   try {
     const carers = await getAllCarers();
-    const baseUrl = req.protocol + "://" + req.get("host");
+    const baseUrl = "https://" + req.get("host");
     const mapped = carers.map((carer) => {
       if (
         carer.profileImageUrl &&
@@ -159,7 +159,7 @@ router.post(
       });
       const obj = newCarer.toObject();
       if (obj.profileImageUrl && obj.profileImageUrl.startsWith("/uploads/")) {
-        const baseUrl = req.protocol + "://" + req.get("host");
+        const baseUrl = "https://" + req.get("host");
         obj.profileImageUrl = `${baseUrl}${obj.profileImageUrl}`;
       }
       res.status(201).json({
@@ -192,7 +192,7 @@ router.get("/:id", authenticateJWT, async (req, res) => {
       carer.profileImageUrl &&
       carer.profileImageUrl.startsWith("/uploads/")
     ) {
-      const baseUrl = req.protocol + "://" + req.get("host");
+      const baseUrl = "https://" + req.get("host");
       mapped = {
         ...carer.toObject(),
         profileImageUrl: `${baseUrl}${carer.profileImageUrl}`,
