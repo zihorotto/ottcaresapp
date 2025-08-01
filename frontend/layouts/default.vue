@@ -21,18 +21,27 @@
         </template>
         <template v-else-if="user">
           <template v-if="hasProfile">
-            <NuxtLink to="/neu_pflegekraft" class="sidebar-link" @click.prevent="navigateAndClose('/neu_pflegekraft')"
+            <NuxtLink
+              to="/neu_pflegekraft"
+              class="sidebar-link"
+              @click.prevent="navigateAndClose('/neu_pflegekraft')"
               >New Pflegekraft</NuxtLink
             >
             <NuxtLink to="/carers" class="sidebar-link" @click.prevent="navigateAndClose('/carers')"
               >Pflegekräfte</NuxtLink
             >
-            <NuxtLink to="/mein-profil" class="sidebar-link" @click.prevent="navigateAndClose('/mein-profil')"
+            <NuxtLink
+              to="/mein-profil"
+              class="sidebar-link"
+              @click.prevent="navigateAndClose('/mein-profil')"
               >Mein Profil</NuxtLink
             >
           </template>
           <template v-else>
-            <NuxtLink to="/neu_pflegekraft" class="sidebar-link" @click.prevent="navigateAndClose('/neu_pflegekraft')"
+            <NuxtLink
+              to="/neu_pflegekraft"
+              class="sidebar-link"
+              @click.prevent="navigateAndClose('/neu_pflegekraft')"
               >New Pflegekraft</NuxtLink
             >
             <NuxtLink to="/carers" class="sidebar-link" @click.prevent="navigateAndClose('/carers')"
@@ -72,8 +81,8 @@ import { createUserManager, signOutRedirect } from '~/src/plugins/cognitoOidc';
 const sidebarOpen = ref(false);
 const route = useRoute();
 const router = useRouter();
-function navigateAndClose(path) {
-  router.push(path);
+async function navigateAndClose(path) {
+  await router.push(path);
   sidebarOpen.value = false;
 }
 const user = ref(null);
