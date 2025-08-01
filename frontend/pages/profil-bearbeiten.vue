@@ -33,7 +33,7 @@ async function fetchProfile() {
   try {
     const userManager = createUserManager();
     const user = await userManager.getUser();
-    const idToken = user?.id_token;
+    const idToken = user?.access_token;
     if (!idToken) throw new Error('No id_token');
     const res = await axios.get('/carers/me', {
       headers: { Authorization: `Bearer ${idToken}` },

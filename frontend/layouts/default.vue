@@ -43,7 +43,7 @@ async function checkProfile() {
   try {
     const userManager = createUserManager();
     const user = await userManager.getUser();
-    const idToken = user?.id_token;
+    const idToken = user?.access_token;
     if (!idToken) {
       hasProfile.value = false;
       return;

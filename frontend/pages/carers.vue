@@ -27,7 +27,7 @@ async function fetchCarers() {
   const user = await userManager.getUser();
   if (!user) return;
   const res = await fetch('https://16.171.144.204/carers', {
-    headers: { Authorization: `Bearer ${user.id_token}` },
+    headers: { Authorization: `Bearer ${user.access_token}` },
   });
   const allCarers = await res.json();
   carers.value = allCarers;

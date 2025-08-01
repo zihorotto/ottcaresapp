@@ -134,7 +134,7 @@ onMounted(async () => {
   const userManager = createUserManager();
   const user = await userManager.getUser();
   userId.value = user?.profile?.email || user?.profile?.sub || 'guest';
-  let token = user?.access_token || user?.id_token;
+  let token = user?.access_token;
   const res = await fetch(
     `/api/carers/${route.params.id}`,
     token

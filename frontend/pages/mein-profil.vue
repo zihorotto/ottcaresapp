@@ -35,8 +35,8 @@ async function fetchProfile() {
     const { createUserManager } = await import('~/src/plugins/cognitoOidc');
     const userManager = createUserManager();
     const user = await userManager.getUser();
-    const idToken = user?.id_token;
-    if (!idToken) throw new Error('No id_token');
+    const idToken = user?.access_token;
+    if (!idToken) throw new Error('No access_token');
     const res = await axios.get('/api/carers/me', {
       headers: { Authorization: `Bearer ${idToken}` },
     });
