@@ -3,6 +3,9 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
+
+dotenv.config();
+
 import carerRoutes from "./routes/carers";
 import chatRoutes from "./routes/chat";
 import profileRoutes from "./routes/profile";
@@ -26,7 +29,6 @@ app.use(
   })
 );
 
-dotenv.config();
 const server = http.createServer(app);
 const io = new SocketIOServer(server, {
   cors: {

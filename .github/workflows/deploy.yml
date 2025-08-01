@@ -28,6 +28,7 @@ jobs:
             echo "NUXT_PUBLIC_COGNITO_DOMAIN=${{ secrets.NUXT_PUBLIC_COGNITO_DOMAIN }}" >> $DIR/.env
             echo "NUXT_PUBLIC_COGNITO_LOGOUT_URI=${{ secrets.NUXT_PUBLIC_COGNITO_LOGOUT_URI }}" >> $DIR/.env
             echo "NUXT_PUBLIC_COGNITO_REDIRECT_URI=${{ secrets.NUXT_PUBLIC_COGNITO_REDIRECT_URI }}" >> $DIR/.env
+            echo "COGNITO_CLIENT_ID=${{ secrets.COGNITO_CLIENT_ID }}" >> $DIR/.env
           done
         shell: bash
 

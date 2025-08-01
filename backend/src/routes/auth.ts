@@ -1,18 +1,17 @@
 /* global process */
-import express from "express";
 import jwt from "jsonwebtoken";
 import jwksClient from "jwks-rsa";
-import dotenv from "dotenv";
 
-// Load environment variables
+import dotenv from "dotenv";
 dotenv.config();
 
+import express from "express";
 const router = express.Router();
 
 // Cognito config from env
 const COGNITO_POOL_ID = process.env.COGNITO_POOL_ID;
 const COGNITO_REGION = process.env.COGNITO_REGION;
-const COGNITO_CLIENT_ID = process.env.NUXT_PUBLIC_COGNITO_CLIENT_ID;
+const COGNITO_CLIENT_ID = process.env.COGNITO_CLIENT_ID;
 
 if (!COGNITO_POOL_ID || !COGNITO_REGION || !COGNITO_CLIENT_ID) {
   throw new Error("Missing Cognito config in environment variables");
