@@ -80,7 +80,6 @@ mongoose
   })
   .catch((err) => {
     console.error("MongoDB connection error:", err);
-    // Indítsuk el a szervert akkor is, ha nincs DB, hogy lásd a hibát HTTP-n keresztül
     server.listen(PORT, "0.0.0.0", () => {
       console.log(
         `Server running in DB ERROR MODE on https://16.171.144.204:${PORT}`
