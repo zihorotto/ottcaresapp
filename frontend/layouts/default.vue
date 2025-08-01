@@ -48,20 +48,21 @@
 </template>
 
 <script setup>
+
 import { ref, onMounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
+import GlobalChat from '~/components/GlobalChat.vue';
+import { createUserManager, signOutRedirect } from '~/src/plugins/cognitoOidc';
+
 const sidebarOpen = ref(false);
 const route = useRoute();
-
-// Auto-close sidebar on route change
-watch(() => route.fullPath, () => { sidebarOpen.value = false; });
-import GlobalChat from '~/components/GlobalChat.vue';
-import { ref, onMounted } from 'vue';
-import { createUserManager, signOutRedirect } from '~/src/plugins/cognitoOidc';
 const user = ref(null);
 const hasProfile = ref(false);
 let userManager;
 const showGlobalChat = ref(false);
+
+// Auto-close sidebar on route change
+watch(() => route.fullPath, () => { sidebarOpen.value = false; });
 
 async function checkProfile() {
   try {
