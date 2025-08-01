@@ -11,7 +11,7 @@
       class="sidebar"
       :class="{ 'sidebar-open': sidebarOpen }"
       @click.self="sidebarOpen = false"
-    >
+    ><NuxtLink 
       <NuxtLink to="/" class="sidebar-logo" @click.prevent="navigateAndClose('/')">
         <span>OttoCares</span>
       </NuxtLink>

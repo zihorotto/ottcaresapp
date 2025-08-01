@@ -82,16 +82,17 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import { createUserManager } from '~/src/plugins/cognitoOidc';
+import { ref, onMounted } from 'vue';
 const user = ref(null);
 const router = useRouter();
 onMounted(async () => {
-  const userManager = createUserManager();
-  user.value = await userManager.getUser();
-  if (user.value) {
-    const role = localStorage.getItem('userRole');
-    if (!role) {
-      router.push('/neu_pflegekraft');
-    }
+  try {
+    const userManager = createUserManager();
+    user.value = await userManager.getUser();
+    // No redirect, just stay on main page
+  } catch (e) {
+    // If token expired or invalid, redirect to login
+    handleLogin();
   }
 });
 function handleLogin() {
