@@ -1,11 +1,7 @@
 <template>
   <div class="main-layout">
     <!-- Hamburger for mobile -->
-    <button
-      class="sidebar-hamburger"
-      @click="sidebarOpen = !sidebarOpen"
-      aria-label="Menü öffnen"
-    >
+    <button class="sidebar-hamburger" @click="sidebarOpen = !sidebarOpen" aria-label="Menü öffnen">
       <span class="hamburger-bar"></span>
       <span class="hamburger-bar"></span>
       <span class="hamburger-bar"></span>
@@ -18,9 +14,19 @@
     >
       <NuxtLink to="/" class="sidebar-logo" @click="sidebarOpen = false">
         <span>OttoCares</span>
+    <aside
+      class="sidebar"
+      :class="{ 'sidebar-open': sidebarOpen }"
+      @click.self="sidebarOpen = false"
+    >
+      <NuxtLink to="/" class="sidebar-logo" @click="sidebarOpen = false">
+        <span>OttoCares</span>
       </NuxtLink>
       <nav class="sidebar-nav">
-        <template v-if="user">
+        <template v-if="loadingUser">
+          <div class="sidebar-loading">Wird synchronisiert...</div>
+        </template>
+        <template v-else-if="user">
           <template v-if="hasProfile">
             <NuxtLink to="/neu_pflegekraft" class="sidebar-link" @click="sidebarOpen = false">New Pflegekraft</NuxtLink>
             <NuxtLink to="/carers" class="sidebar-link" @click="sidebarOpen = false">Pflegekräfte</NuxtLink>
@@ -31,11 +37,21 @@
             <NuxtLink to="/carers" class="sidebar-link" @click="sidebarOpen = false">Pflegekräfte</NuxtLink>
           </template>
         </template>
-        <template v-else> </template>
       </nav>
       <div style="flex: 1 1 auto"></div>
-      <div v-if="user" class="sidebar-link sidebar-signout-wrap">
+      <div v-if="user && !loadingUser" class="sidebar-link sidebar-signout-wrap">
         <button class="sidebar-link sidebar-signout-btn" @click="handleLogout; sidebarOpen = false">Abmelden</button>
+      </div>
+    </aside>
+        <button
+          class="sidebar-link sidebar-signout-btn"
+          @click="
+            handleLogout;
+            sidebarOpen = false;
+          "
+        >
+          Abmelden
+        </button>
       </div>
     </aside>
     <!-- Overlay for mobile -->
@@ -48,7 +64,6 @@
 </template>
 
 <script setup>
-
 import { ref, onMounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import GlobalChat from '~/components/GlobalChat.vue';
@@ -58,11 +73,17 @@ const sidebarOpen = ref(false);
 const route = useRoute();
 const user = ref(null);
 const hasProfile = ref(false);
+const loadingUser = ref(true);
 let userManager;
 const showGlobalChat = ref(false);
 
 // Auto-close sidebar on route change
-watch(() => route.fullPath, () => { sidebarOpen.value = false; });
+watch(
+  () => route.fullPath,
+  () => {
+    sidebarOpen.value = false;
+  },
+);
 
 async function checkProfile() {
   try {
@@ -84,11 +105,15 @@ async function checkProfile() {
 
 onMounted(async () => {
   userManager = createUserManager();
+  loadingUser.value = true;
   user.value = await userManager.getUser();
   await checkProfile();
+  loadingUser.value = false;
   userManager.events.addUserLoaded(async (u) => {
     user.value = u;
+    loadingUser.value = true;
     await checkProfile();
+    loadingUser.value = false;
   });
   userManager.events.addUserUnloaded(() => {
     user.value = null;
@@ -124,6 +149,13 @@ function handleLogout() {
 </script>
 
 <style scoped>
+.sidebar-loading {
+  font-size: 1.1rem;
+  color: #7c3aed;
+  font-weight: 600;
+  padding: 0.7rem 1.2rem;
+  text-align: center;
+}
 .sidebar-hamburger {
   display: none;
   position: fixed;
@@ -166,9 +198,28 @@ function handleLogout() {
     transform: translateX(-100%);
     transition: transform 0.25s cubic-bezier(.4,0,.2,1);
     box-shadow: 2px 0 16px 0 rgba(124, 58, 237, 0.13);
+    flex-direction: column;
+    align-items: flex-start;
+    padding-top: 2.2rem;
   }
   .sidebar.sidebar-open {
     transform: translateX(0);
+  }
+  .sidebar-logo {
+    align-self: flex-start;
+    margin-bottom: 2.2rem;
+    margin-left: 1.2rem;
+  }
+  .sidebar-nav {
+    flex-direction: column;
+    gap: 0.7rem;
+    width: 100%;
+    align-items: flex-start;
+    margin-left: 1.2rem;
+  }
+  .sidebar-link {
+    width: 100%;
+    text-align: left;
   }
   .sidebar-overlay {
     display: block;
