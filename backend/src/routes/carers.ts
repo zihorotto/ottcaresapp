@@ -52,16 +52,11 @@ router.get("/", authenticateJWT, async (req, res) => {
     const carers = await getAllCarers();
     const baseUrl = "https://" + req.get("host");
     const mapped = carers.map((carer) => {
-      if (
-        carer.profileImageUrl &&
-        carer.profileImageUrl.startsWith("/uploads/")
-      ) {
-        return {
-          ...carer.toObject(),
-          profileImageUrl: `${baseUrl}${carer.profileImageUrl}`,
-        };
+      let obj = carer.toObject ? carer.toObject() : carer;
+      if (obj.profileImageUrl && obj.profileImageUrl.startsWith("/uploads/")) {
+        obj.profileImageUrl = `${baseUrl}${obj.profileImageUrl}`;
       }
-      return carer;
+      return obj;
     });
     res.json(
       mapped.map((obj) => ({
