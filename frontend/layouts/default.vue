@@ -1,28 +1,45 @@
 <template>
   <div class="main-layout">
-    <aside class="sidebar">
-      <NuxtLink to="/" class="sidebar-logo">
+    <!-- Hamburger for mobile -->
+    <button
+      class="sidebar-hamburger"
+      @click="sidebarOpen = !sidebarOpen"
+      aria-label="Menü öffnen"
+    >
+      <span class="hamburger-bar"></span>
+      <span class="hamburger-bar"></span>
+      <span class="hamburger-bar"></span>
+    </button>
+    <!-- Sidebar as drawer on mobile -->
+    <aside
+      class="sidebar"
+      :class="{ 'sidebar-open': sidebarOpen }"
+      @click.self="sidebarOpen = false"
+    >
+      <NuxtLink to="/" class="sidebar-logo" @click="sidebarOpen = false">
         <span>OttoCares</span>
       </NuxtLink>
       <nav class="sidebar-nav">
         <template v-if="user">
           <template v-if="hasProfile">
-            <NuxtLink to="/neu_pflegekraft" class="sidebar-link">New Pflegekraft</NuxtLink>
-            <NuxtLink to="/carers" class="sidebar-link">Pflegekräfte</NuxtLink>
-            <NuxtLink to="/mein-profil" class="sidebar-link">Mein Profil</NuxtLink>
+            <NuxtLink to="/neu_pflegekraft" class="sidebar-link" @click="sidebarOpen = false">New Pflegekraft</NuxtLink>
+            <NuxtLink to="/carers" class="sidebar-link" @click="sidebarOpen = false">Pflegekräfte</NuxtLink>
+            <NuxtLink to="/mein-profil" class="sidebar-link" @click="sidebarOpen = false">Mein Profil</NuxtLink>
           </template>
           <template v-else>
-            <NuxtLink to="/neu_pflegekraft" class="sidebar-link">New Pflegekraft</NuxtLink>
-            <NuxtLink to="/carers" class="sidebar-link">Pflegekräfte</NuxtLink>
+            <NuxtLink to="/neu_pflegekraft" class="sidebar-link" @click="sidebarOpen = false">New Pflegekraft</NuxtLink>
+            <NuxtLink to="/carers" class="sidebar-link" @click="sidebarOpen = false">Pflegekräfte</NuxtLink>
           </template>
         </template>
         <template v-else> </template>
       </nav>
       <div style="flex: 1 1 auto"></div>
       <div v-if="user" class="sidebar-link sidebar-signout-wrap">
-        <button class="sidebar-link sidebar-signout-btn" @click="handleLogout">Abmelden</button>
+        <button class="sidebar-link sidebar-signout-btn" @click="handleLogout; sidebarOpen = false">Abmelden</button>
       </div>
     </aside>
+    <!-- Overlay for mobile -->
+    <div v-if="sidebarOpen" class="sidebar-overlay" @click="sidebarOpen = false"></div>
     <main class="main-content">
       <slot />
     </main>
@@ -31,6 +48,13 @@
 </template>
 
 <script setup>
+import { ref, onMounted, watch } from 'vue';
+import { useRoute } from 'vue-router';
+const sidebarOpen = ref(false);
+const route = useRoute();
+
+// Auto-close sidebar on route change
+watch(() => route.fullPath, () => { sidebarOpen.value = false; });
 import GlobalChat from '~/components/GlobalChat.vue';
 import { ref, onMounted } from 'vue';
 import { createUserManager, signOutRedirect } from '~/src/plugins/cognitoOidc';
@@ -99,6 +123,66 @@ function handleLogout() {
 </script>
 
 <style scoped>
+.sidebar-hamburger {
+  display: none;
+  position: fixed;
+  top: 1.2rem;
+  left: 1.2rem;
+  z-index: 1001;
+  width: 44px;
+  height: 44px;
+  background: #fff;
+  border: 1.5px solid #e9d5ff;
+  border-radius: 0.7rem;
+  box-shadow: 0 2px 8px 0 rgba(124, 58, 237, 0.08);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 7px 0;
+  cursor: pointer;
+}
+.hamburger-bar {
+  width: 26px;
+  height: 4px;
+  background: #14b8a6;
+  border-radius: 2px;
+  display: block;
+}
+.sidebar-overlay {
+  display: none;
+}
+@media (max-width: 900px) {
+  .sidebar-hamburger {
+    display: flex;
+  }
+  .sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    z-index: 1002;
+    transform: translateX(-100%);
+    transition: transform 0.25s cubic-bezier(.4,0,.2,1);
+    box-shadow: 2px 0 16px 0 rgba(124, 58, 237, 0.13);
+  }
+  .sidebar.sidebar-open {
+    transform: translateX(0);
+  }
+  .sidebar-overlay {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.18);
+    z-index: 1000;
+  }
+  .main-content {
+    min-height: 100vh;
+  }
+}
 .main-layout {
   display: flex;
   min-height: 100vh;

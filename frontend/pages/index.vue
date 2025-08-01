@@ -118,12 +118,11 @@ body,
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  height: 100vh;
   width: 100%;
   padding: 1.5rem 1.2rem 1rem 1.2rem;
   gap: 1.2rem;
   box-sizing: border-box;
-  overflow: hidden;
+  /* allow scrolling if content is taller than viewport */
 }
 .glass-card.welcome-card {
   margin-top: 0;
