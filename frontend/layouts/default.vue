@@ -54,8 +54,8 @@
 </template>
 
 <script setup>
-function navigateAndClose(path) {
-  router.push(path);
+async function navigateAndClose(path) {
+  await router.push(path);
   sidebarOpen.value = false;
 }
 import { ref, onMounted, watch } from 'vue';
