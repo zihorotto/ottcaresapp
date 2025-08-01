@@ -6,8 +6,11 @@
       Mein Profil
     </h1>
     <div
-      class="neu_pflegekraft-card bg-white/80 rounded-2xl shadow-xl px-4 py-6 flex flex-col items-center max-w-md w-full"
+      class="neu_pflegekraft-card bg-white/80 rounded-2xl shadow-xl px-4 py-6 flex flex-col items-center max-w-md w-full responsive-profile-card"
     >
+      /* Responsive profile card for mein-profil */ .responsive-profile-card { box-sizing:
+      border-box; } @media (max-width: 600px) { .responsive-profile-card { padding: 0.7rem 0.1rem;
+      max-width: 99vw; } }
       <div v-if="profile && profile.role" class="mb-2 text-base font-semibold text-purple-700">
         Rolle:
         {{ profile.role.charAt(0).toUpperCase() + profile.role.slice(1) }}

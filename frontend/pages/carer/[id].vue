@@ -150,18 +150,50 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+/* Responsive profile card */
 .profile-card {
   background: rgba(255, 255, 255, 0.85);
   border-radius: 1.2rem;
   box-shadow: 0 4px 16px 0 rgba(194, 206, 230, 0.14);
-  padding: 1rem 0.7rem 0.7rem 0.7rem;
-  max-width: 320px;
+  padding: 1.2rem 1.2rem 1rem 1.2rem;
+  max-width: 420px;
   width: 100%;
   margin: 1.2rem auto 0.8rem auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.7rem;
+  gap: 0.9rem;
+  box-sizing: border-box;
+}
+
+@media (max-width: 900px) {
+  .profile-card {
+    max-width: 98vw;
+    padding: 1rem 0.5rem 0.7rem 0.5rem;
+    gap: 0.7rem;
+  }
+}
+@media (max-width: 600px) {
+  .profile-card {
+    max-width: 99vw;
+    padding: 0.7rem 0.1rem 0.5rem 0.1rem;
+    gap: 0.5rem;
+  }
+  .profile-img,
+  .profile-img-fallback {
+    width: 48px;
+    height: 48px;
+  }
+  .profile-name {
+    font-size: 1.05rem;
+  }
+  .profile-section-title {
+    font-size: 0.9rem;
+  }
+  .chat-btn {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+  }
 }
 .profile-img-wrap {
   display: flex;

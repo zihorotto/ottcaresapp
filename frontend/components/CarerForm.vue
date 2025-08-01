@@ -106,6 +106,7 @@ async function handleSubmit() {
 </script>
 
 <style scoped>
+/* Responsive carer form */
 .carer-form {
   background: rgba(255, 255, 255, 0.85);
   border-radius: 1.1rem;
@@ -117,6 +118,23 @@ async function handleSubmit() {
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
+  box-sizing: border-box;
+}
+
+@media (max-width: 600px) {
+  .carer-form {
+    padding: 0.6rem 0.2rem;
+    gap: 0.5rem;
+  }
+  .form-input {
+    font-size: 1.05rem;
+    padding: 0.45rem 0.7rem;
+  }
+  .save-btn {
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    margin-top: 0.4rem;
+  }
 }
 .save-btn {
   background: linear-gradient(90deg, #38bdf8 0%, #14b8a6 100%);

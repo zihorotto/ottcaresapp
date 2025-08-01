@@ -37,6 +37,7 @@ fetchCarers();
 </script>
 
 <style scoped>
+/* Responsive card-list container */
 .carers-card-list {
   background: rgba(255, 255, 255, 0.7);
   border-radius: 2rem;
@@ -45,6 +46,9 @@ fetchCarers();
   border: 1px solid #e0f2fe;
   margin-top: 2rem;
   margin-bottom: 2rem;
+  width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 /* Removed carers-bg, now handled by AnimatedBg */
 @keyframes bg-diagonal {
@@ -102,22 +106,16 @@ fetchCarers();
 
 /* --- Responsive Styles (combined and optimized) --- */
 @media (max-width: 900px) {
-  .carers-card {
-    padding: 1.5rem;
+  .carers-card-list {
+    padding: 1.2rem 0.5rem;
     max-width: 98vw;
-  }
-  .carer-card {
-    padding: 1.5rem;
   }
 }
 
 @media (max-width: 600px) {
-  .carers-card {
-    padding: 1rem 0.2rem;
+  .carers-card-list {
+    padding: 0.5rem 0.1rem;
     max-width: 99vw;
-  }
-  .carer-card {
-    padding: 1rem 0.2rem;
   }
   h1 {
     font-size: 2rem;

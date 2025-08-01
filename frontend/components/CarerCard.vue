@@ -1,7 +1,6 @@
 <template>
   <div
-    class="carer-card bg-white rounded-xl shadow-lg p-6 flex flex-col items-center justify-center animate-fade-in text-center"
-    style="width: 340px; max-width: 420px; min-width: 320px"
+    class="carer-card bg-white rounded-xl shadow-lg p-6 flex flex-col items-center justify-center animate-fade-in text-center responsive-card"
   >
     <img
       v-if="carer.profileImageUrl"
@@ -41,25 +40,45 @@ defineProps<{ carer: any }>();
 </script>
 
 <style scoped>
+/* Responsive card layout */
 .carer-card {
   transition:
     transform 0.18s,
     box-shadow 0.18s;
   width: 100%;
   max-width: 420px;
-  min-width: 320px;
-
+  min-width: 0;
+  box-sizing: border-box;
   padding: 1.5rem;
   margin: 0 auto;
-
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
   text-align: center;
   background-color: white;
   border-radius: 1rem;
+}
+
+@media (max-width: 900px) {
+  .carer-card {
+    max-width: 98vw;
+    padding: 1.2rem 0.7rem;
+  }
+}
+@media (max-width: 600px) {
+  .carer-card {
+    max-width: 99vw;
+    padding: 0.7rem 0.2rem;
+  }
+  .carer-card img {
+    width: 72px;
+    height: 72px;
+  }
+  .modern-btn {
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+  }
 }
 .carer-card:hover {
   transform: scale(1.04);
