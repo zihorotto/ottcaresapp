@@ -12,7 +12,7 @@
       :class="{ 'sidebar-open': sidebarOpen }"
       @click.self="sidebarOpen = false"
     ><NuxtLink 
-      <NuxtLink to="/" class="sidebar-logo" @click.prevent="navigateAndClose('/')">
+      <NuxtLink to="/" class="sidebar-logo" @click="sidebarOpen = false">
         <span>OttoCares</span>
       </NuxtLink>
       <nav class="sidebar-nav">
@@ -24,16 +24,16 @@
             <NuxtLink
               to="/neu_pflegekraft"
               class="sidebar-link"
-              @click.prevent="navigateAndClose('/neu_pflegekraft')"
+              @click="sidebarOpen = false"
               >New Pflegekraft</NuxtLink
             >
-            <NuxtLink to="/carers" class="sidebar-link" @click.prevent="navigateAndClose('/carers')"
+            <NuxtLink to="/carers" class="sidebar-link" @click="sidebarOpen = false"
               >Pflegekräfte</NuxtLink
             >
             <NuxtLink
               to="/mein-profil"
               class="sidebar-link"
-              @click.prevent="navigateAndClose('/mein-profil')"
+              @click="sidebarOpen = false"
               >Mein Profil</NuxtLink
             >
           </template>
@@ -41,10 +41,10 @@
             <NuxtLink
               to="/neu_pflegekraft"
               class="sidebar-link"
-              @click.prevent="navigateAndClose('/neu_pflegekraft')"
+              @click="sidebarOpen = false"
               >New Pflegekraft</NuxtLink
             >
-            <NuxtLink to="/carers" class="sidebar-link" @click.prevent="navigateAndClose('/carers')"
+            <NuxtLink to="/carers" class="sidebar-link" @click="sidebarOpen = false"
               >Pflegekräfte</NuxtLink
             >
           </template>
@@ -81,10 +81,6 @@ import { createUserManager, signOutRedirect } from '~/src/plugins/cognitoOidc';
 const sidebarOpen = ref(false);
 const route = useRoute();
 const router = useRouter();
-async function navigateAndClose(path) {
-  await router.push(path);
-  sidebarOpen.value = false;
-}
 const user = ref(null);
 const hasProfile = ref(false);
 const loadingUser = ref(true);
