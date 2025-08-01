@@ -64,15 +64,15 @@
         <h2 class="about-title">Über uns</h2>
         <p class="about-text">
           <span class="about-highlight">OttoCares</span> ist eine innovative Plattform, die
-            Pflegekräfte und Familien zusammenbringt.<br />
-            Unser Ziel ist es, die Suche nach qualifizierten Pflegekräften
-            <span class="about-highlight">einfach</span>,
-            <span class="about-highlight">sicher</span> und
-            <span class="about-highlight">menschlich</span> zu gestalten.<br />
-            Wir setzen auf <span class="about-highlight">Herz</span>,
-            <span class="about-highlight">Vertrauen</span> und
-            <span class="about-highlight">moderne Technologie</span>, um die Pflegebranche zu
-            unterstützen.
+          Pflegekräfte und Familien zusammenbringt.<br />
+          Unser Ziel ist es, die Suche nach qualifizierten Pflegekräften
+          <span class="about-highlight">einfach</span>,
+          <span class="about-highlight">sicher</span> und
+          <span class="about-highlight">menschlich</span> zu gestalten.<br />
+          Wir setzen auf <span class="about-highlight">Herz</span>,
+          <span class="about-highlight">Vertrauen</span> und
+          <span class="about-highlight">moderne Technologie</span>, um die Pflegebranche zu
+          unterstützen.
         </p>
       </div>
     </div>
