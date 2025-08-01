@@ -1,7 +1,10 @@
 <template>
   <AnimatedBg>
     <div class="carers-card-list w-full max-w-8xl mx-auto py-10 px-2">
-      <CarerList :carers="carers" />
+      <div v-if="error" class="error-message text-red-600 text-center text-lg py-4">
+        {{ error }}
+      </div>
+      <CarerList v-else :carers="carers" />
     </div>
   </AnimatedBg>
 </template>
@@ -12,7 +15,8 @@ definePageMeta({ layout: 'default' });
 import { ref } from 'vue';
 import CarerList from '~/components/CarerList.vue';
 import { createUserManager, signOutRedirect } from '~/src/plugins/cognitoOidc';
-const carers = ref([]);
+const carers = ref<any[]>([]);
+const error = ref<string | null>(null);
 
 function handleLogin() {
   const userManager = createUserManager();
@@ -26,11 +30,22 @@ async function fetchCarers() {
   const userManager = createUserManager();
   const user = await userManager.getUser();
   if (!user) return;
-  const res = await fetch('https://16.171.144.204/carers', {
-    headers: { Authorization: `Bearer ${user.access_token}` },
-  });
-  const allCarers = await res.json();
-  carers.value = allCarers;
+  try {
+    const res = await fetch('https://16.171.144.204/carers', {
+      headers: { Authorization: `Bearer ${user.access_token}` },
+    });
+    const allCarers = await res.json();
+    if (Array.isArray(allCarers)) {
+      carers.value = allCarers;
+      error.value = null;
+    } else {
+      carers.value = [];
+      error.value = allCarers.error || 'Ismeretlen hiba történt.';
+    }
+  } catch (e: any) {
+    carers.value = [];
+    error.value = e.message || 'Ismeretlen hiba történt.';
+  }
 }
 
 fetchCarers();
