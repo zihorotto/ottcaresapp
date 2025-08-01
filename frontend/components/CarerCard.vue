@@ -5,7 +5,7 @@
   >
     <img
       v-if="carer.profileImageUrl"
-      :src="carer.profileImageUrl"
+      :src="carer.profileImageUrl?.replace(':3001', '')"
       alt="Profile picture"
       class="w-24 h-24 rounded-full mb-3 object-cover border-2 border-purple-200"
     />

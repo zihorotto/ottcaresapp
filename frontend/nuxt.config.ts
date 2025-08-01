@@ -2,11 +2,11 @@
 import { defineNuxtConfig } from 'nuxt/config';
 
 export default defineNuxtConfig({
-  vite: {
+   vite: {
     server: {
       proxy: {
         '/carers': {
-          target: 'http://16.171.144.204',
+          target: 'http://16.171.144.204:3001',
           changeOrigin: true,
           secure: false,
         },
