@@ -14,13 +14,6 @@
     >
       <NuxtLink to="/" class="sidebar-logo" @click="sidebarOpen = false">
         <span>OttoCares</span>
-    <aside
-      class="sidebar"
-      :class="{ 'sidebar-open': sidebarOpen }"
-      @click.self="sidebarOpen = false"
-    >
-      <NuxtLink to="/" class="sidebar-logo" @click="sidebarOpen = false">
-        <span>OttoCares</span>
       </NuxtLink>
       <nav class="sidebar-nav">
         <template v-if="loadingUser">
@@ -28,21 +21,28 @@
         </template>
         <template v-else-if="user">
           <template v-if="hasProfile">
-            <NuxtLink to="/neu_pflegekraft" class="sidebar-link" @click="sidebarOpen = false">New Pflegekraft</NuxtLink>
-            <NuxtLink to="/carers" class="sidebar-link" @click="sidebarOpen = false">Pflegekräfte</NuxtLink>
-            <NuxtLink to="/mein-profil" class="sidebar-link" @click="sidebarOpen = false">Mein Profil</NuxtLink>
+            <NuxtLink to="/neu_pflegekraft" class="sidebar-link" @click="sidebarOpen = false"
+              >New Pflegekraft</NuxtLink
+            >
+            <NuxtLink to="/carers" class="sidebar-link" @click="sidebarOpen = false"
+              >Pflegekräfte</NuxtLink
+            >
+            <NuxtLink to="/mein-profil" class="sidebar-link" @click="sidebarOpen = false"
+              >Mein Profil</NuxtLink
+            >
           </template>
           <template v-else>
-            <NuxtLink to="/neu_pflegekraft" class="sidebar-link" @click="sidebarOpen = false">New Pflegekraft</NuxtLink>
-            <NuxtLink to="/carers" class="sidebar-link" @click="sidebarOpen = false">Pflegekräfte</NuxtLink>
+            <NuxtLink to="/neu_pflegekraft" class="sidebar-link" @click="sidebarOpen = false"
+              >New Pflegekraft</NuxtLink
+            >
+            <NuxtLink to="/carers" class="sidebar-link" @click="sidebarOpen = false"
+              >Pflegekräfte</NuxtLink
+            >
           </template>
         </template>
       </nav>
       <div style="flex: 1 1 auto"></div>
       <div v-if="user && !loadingUser" class="sidebar-link sidebar-signout-wrap">
-        <button class="sidebar-link sidebar-signout-btn" @click="handleLogout; sidebarOpen = false">Abmelden</button>
-      </div>
-    </aside>
         <button
           class="sidebar-link sidebar-signout-btn"
           @click="
@@ -196,7 +196,7 @@ function handleLogout() {
     height: 100vh;
     z-index: 1002;
     transform: translateX(-100%);
-    transition: transform 0.25s cubic-bezier(.4,0,.2,1);
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 2px 0 16px 0 rgba(124, 58, 237, 0.13);
     flex-direction: column;
     align-items: flex-start;
@@ -228,7 +228,7 @@ function handleLogout() {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0,0,0,0.18);
+    background: rgba(0, 0, 0, 0.18);
     z-index: 1000;
   }
   .main-content {
