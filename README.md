@@ -40,7 +40,7 @@ OttoCares ist eine moderne Cloud-Plattform, die Pflegekräfte und Familien zusam
 
 - **Benutzername:** ottocares@ottocares.hu
 - **Passwort:** Ottocares123456.?
-- (Falls nicht funktionsfähig, bitte neuen Test-Account beim Admin anfragen oder selbst registrieren)
+- (Falls nicht funktionsfähig, bitte neuen Test-Account beim Otto anfragen oder selbst registrieren)
 
 Für die Entwicklung:
 ### Entwicklung starten

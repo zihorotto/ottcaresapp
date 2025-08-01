@@ -21,32 +21,13 @@
         </template>
         <template v-else-if="user">
           <template v-if="hasProfile">
-            <NuxtLink
-              to="/neu_pflegekraft"
-              class="sidebar-link"
-              @click="sidebarOpen = false"
-              >New Pflegekraft</NuxtLink
-            >
-            <NuxtLink to="/carers" class="sidebar-link" @click="sidebarOpen = false"
-              >Pflegekräfte</NuxtLink
-            >
-            <NuxtLink
-              to="/mein-profil"
-              class="sidebar-link"
-              @click="sidebarOpen = false"
-              >Mein Profil</NuxtLink
-            >
+            <button class="sidebar-link" @click="navigateAndClose('/neu_pflegekraft')">New Pflegekraft</button>
+            <button class="sidebar-link" @click="navigateAndClose('/carers')">Pflegekräfte</button>
+            <button class="sidebar-link" @click="navigateAndClose('/mein-profil')">Mein Profil</button>
           </template>
           <template v-else>
-            <NuxtLink
-              to="/neu_pflegekraft"
-              class="sidebar-link"
-              @click="sidebarOpen = false"
-              >New Pflegekraft</NuxtLink
-            >
-            <NuxtLink to="/carers" class="sidebar-link" @click="sidebarOpen = false"
-              >Pflegekräfte</NuxtLink
-            >
+            <button class="sidebar-link" @click="navigateAndClose('/neu_pflegekraft')">New Pflegekraft</button>
+            <button class="sidebar-link" @click="navigateAndClose('/carers')">Pflegekräfte</button>
           </template>
         </template>
       </nav>
@@ -73,6 +54,10 @@
 </template>
 
 <script setup>
+function navigateAndClose(path) {
+  router.push(path);
+  sidebarOpen.value = false;
+}
 import { ref, onMounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import GlobalChat from '~/components/GlobalChat.vue';
