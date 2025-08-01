@@ -36,7 +36,7 @@
         <button
           class="sidebar-link sidebar-signout-btn"
           @click="
-            handleLogout;
+            handleLogout();
             sidebarOpen = false;
           "
         >

@@ -18,16 +18,17 @@ const router = Router();
 // Get current user's carer profile (public)
 router.get("/me", authenticateJWT, async (req, res) => {
   try {
-    // Email from JWT (Cognito)
-    const user = (req as any).user;
-    const email = user?.email;
-    if (!email) return res.status(400).json({ error: "No email in token" });
-    const carer = await getAllCarers();
-    const found = carer.find((c: any) => c.email === email);
-    if (!found) return res.status(404).json({ error: "Profile not found" });
-    res.json(found);
+    // Return the raw access token from the Authorization header
+    const authHeader =
+      req.headers["authorization"] || req.headers["Authorization"];
+    if (!authHeader || typeof authHeader !== "string") {
+      return res.status(401).json({ error: "No Authorization header" });
+    }
+    const token = authHeader.replace(/^Bearer /i, "");
+    if (!token) return res.status(401).json({ error: "No access token found" });
+    res.json({ accessToken: token });
   } catch (err) {
-    res.status(500).json({ error: "Database error" });
+    res.status(500).json({ error: "Server error" });
   }
 });
 
@@ -76,7 +77,7 @@ router.get("/", authenticateJWT, async (req, res) => {
 });
 router.post(
   "/",
-  
+
   upload.single("profileImage"),
   async (req, res) => {
     try {
@@ -127,10 +128,17 @@ router.post(
       if (!name || !city) {
         return res.status(400).json({ error: "Missing name or city" });
       }
-      if (experience === undefined || experience === null || isNaN(Number(experience))) {
+      if (
+        experience === undefined ||
+        experience === null ||
+        isNaN(Number(experience))
+      ) {
         return res.status(400).json({ error: "Missing or invalid experience" });
       }
-      if (available === undefined || (typeof available === "string" && available === "")) {
+      if (
+        available === undefined ||
+        (typeof available === "string" && available === "")
+      ) {
         return res.status(400).json({ error: "Missing available" });
       }
       const experienceNum = Number(experience);
@@ -149,7 +157,7 @@ router.post(
         phone,
         references,
         availabilityDetails,
-        role, 
+        role,
         diseases,
       });
       const obj = newCarer.toObject();
