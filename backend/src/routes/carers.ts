@@ -129,42 +129,33 @@ router.post(
         }
       }
       // Validate required fields
-      if (!role) {
-        return res.status(400).json({ error: "Missing role" });
-      }
       if (!name || !city) {
         return res.status(400).json({ error: "Missing name or city" });
       }
-      if (role === "pfleger") {
-        experience = Number(experience);
-        if (typeof available === "string") {
-          available = available === "true";
-        }
-        if (isNaN(experience) || typeof available !== "boolean") {
-          return res.status(400).json({ error: "Missing or invalid fields" });
-        }
+      if (experience === undefined || experience === null || isNaN(Number(experience))) {
+        return res.status(400).json({ error: "Missing or invalid experience" });
       }
-      if (
-        (role === "patient" || role === "relative") &&
-        (!diseases || diseases.length < 1)
-      ) {
-        return res
-          .status(400)
-          .json({ error: "Missing diseases for patient/relative" });
+      if (available === undefined || (typeof available === "string" && available === "")) {
+        return res.status(400).json({ error: "Missing available" });
       }
+      const experienceNum = Number(experience);
+      let availableBool = available;
+      if (typeof available === "string") {
+        availableBool = available === "true";
+      }
+
       const newCarer = await createCarer({
         name,
         city,
-        experience: role === "pfleger" ? experience : undefined,
-        available: role === "pfleger" ? available : undefined,
+        experience: experienceNum,
+        available: availableBool,
         profileImageUrl,
         email,
         phone,
         references,
         availabilityDetails,
-        role,
-        diseases:
-          role === "patient" || role === "relative" ? diseases : undefined,
+        role, 
+        diseases,
       });
       const obj = newCarer.toObject();
       if (obj.profileImageUrl && obj.profileImageUrl.startsWith("/uploads/")) {
