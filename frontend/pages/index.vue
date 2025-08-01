@@ -80,10 +80,14 @@
 </template>
 
 <script setup>
+// ✨ FIX: Import ref and onMounted from vue
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { createUserManager } from '~/src/plugins/cognitoOidc';
+
 const user = ref(null);
 const router = useRouter();
+
 onMounted(async () => {
   const userManager = createUserManager();
   user.value = await userManager.getUser();
@@ -94,6 +98,7 @@ onMounted(async () => {
     }
   }
 });
+
 function handleLogin() {
   const userManager = createUserManager();
   userManager.signinRedirect();
@@ -122,7 +127,6 @@ body,
   padding: 1.5rem 1.2rem 1rem 1.2rem;
   gap: 1.2rem;
   box-sizing: border-box;
-  /* allow scrolling if content is taller than viewport */
 }
 .glass-card.welcome-card {
   margin-top: 0;
@@ -330,19 +334,8 @@ body,
     font-size: 2.2rem;
   }
 }
-@keyframes fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-.animate-fade-in {
-  animation: fade-in 0.7s ease;
-}
+
+/* ✨ FIX: Removed duplicated animation rules */
 @keyframes fade-in {
   from {
     opacity: 0;
