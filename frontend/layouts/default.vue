@@ -23,7 +23,7 @@
           <template v-if="hasProfile">
             <button class="sidebar-link" @click="navigateAndClose('/neu_pflegekraft')">New Pflegekraft</button>
             <button class="sidebar-link" @click="navigateAndClose('/carers')">Pflegekräfte</button>
-            <button class="sidebar-link" @click="navigateAndClose('/mein-profil')">Mein Profil</button>
+            <!-- Mein Profil button removed -->
           </template>
           <template v-else>
             <button class="sidebar-link" @click="navigateAndClose('/neu_pflegekraft')">New Pflegekraft</button>

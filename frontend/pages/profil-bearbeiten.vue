@@ -49,7 +49,7 @@ async function fetchProfile() {
 onMounted(async () => {
   await fetchProfile();
   if (profile.value) {
-    router.replace('/mein-profil');
+    // router.replace('/mein-profil'); // removed, no such page
   }
 });
 
@@ -57,7 +57,7 @@ function handleCreated() {
   success.value = true;
   setTimeout(() => (success.value = false), 1000);
   // Átirányítás Mein Profil oldalra
-  router.push('/mein-profil');
+  // router.push('/mein-profil'); // removed, no such page
 }
 function handleLogin() {
   const userManager = createUserManager();

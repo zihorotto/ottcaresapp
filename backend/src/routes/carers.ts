@@ -16,34 +16,6 @@ import {
 const router = Router();
 
 // Get current user's carer profile (public)
-router.get("/me", authenticateJWT, async (req, res) => {
-  try {
-    const user = (req as any).user;
-    if (!user) {
-      return res.status(401).json({ error: "No user info in token" });
-    }
-    // Try to find carer profile by email (or sub if that's the unique id)
-    let carer = null;
-    if (user.email) {
-      const allCarers = await getAllCarers();
-      carer = allCarers.find((c: any) => c.email === user.email);
-    } else if (user.sub) {
-      const allCarers = await getAllCarers();
-      carer = allCarers.find((c: any) => c.sub === user.sub);
-    }
-    let carerObj = null;
-    if (carer) {
-      carerObj = carer.toObject ? carer.toObject() : { ...carer };
-      // Remove _id from carer object
-      if (carerObj && typeof carerObj === "object" && "_id" in carerObj) {
-        delete (carerObj as any)._id;
-      }
-    }
-    res.json({ user, carer: carerObj });
-  } catch (err) {
-    res.status(500).json({ error: "Server error" });
-  }
-});
 
 // eslint-disable-next-line no-undef
 const UPLOADS_PATH = path.resolve(__dirname, "../../uploads");

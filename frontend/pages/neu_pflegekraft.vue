@@ -29,7 +29,7 @@ function handleCreated() {
   success.value = true;
   setTimeout(() => {
     success.value = false;
-    router.push('/mein-profil');
+    // router.push('/mein-profil'); // removed, no such page
   }, 1200);
 }
 </script>
