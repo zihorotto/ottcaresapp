@@ -16,7 +16,7 @@ import {
 const router = Router();
 
 // Get current user's carer profile (public)
-router.get("/me", async (req, res) => {
+router.get("/me", authenticateJWT, async (req, res) => {
   try {
     // Email from JWT (Cognito)
     const user = (req as any).user;
@@ -81,7 +81,7 @@ router.get("/", authenticateJWT, async (req, res) => {
 });
 router.post(
   "/",
-  authenticateJWT,
+  
   upload.single("profileImage"),
   async (req, res) => {
     try {
