@@ -6,7 +6,7 @@ export default defineNuxtConfig({
     server: {
       proxy: {
         '/carers': {
-          target: 'https://16.171.144.204:3001',
+          target: 'http://16.171.144.204:3001',
           changeOrigin: true,
           secure: false,
         },
