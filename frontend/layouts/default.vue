@@ -312,22 +312,38 @@ function handleLogout() {
   }
   .sidebar {
     width: 100vw;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.7rem 1rem;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 0.7rem 1rem 1rem 1rem;
     box-shadow: 0 2px 16px 0 rgba(124, 58, 237, 0.08);
     border-right: none;
     border-bottom: 1px solid #f3e8ff;
+    min-height: 100vh;
   }
   .sidebar-logo {
-    margin-bottom: 0;
+    margin-bottom: 1.2rem;
     font-size: 1.2rem;
+    margin-left: 0;
   }
   .sidebar-nav {
-    flex-direction: row;
+    flex-direction: column;
     gap: 0.7rem;
-    width: auto;
+    width: 100%;
+    align-items: flex-start;
+    margin-left: 0;
+  }
+  .sidebar-link {
+    width: 100%;
+    text-align: left;
+  }
+  .sidebar-signout-wrap {
+    width: 100%;
+    margin-top: auto;
+    display: flex;
+    justify-content: center;
+    padding-top: 1.2rem;
+    padding-bottom: 0.5rem;
   }
   .main-content {
     min-height: calc(100vh - 60px);
