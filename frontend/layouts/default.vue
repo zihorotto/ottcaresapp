@@ -1,12 +1,12 @@
 <template>
   <div class="main-layout">
-    <!-- Hamburger always visible -->
+    <!-- Hamburger for mobile -->
     <button class="sidebar-hamburger" @click="sidebarOpen = !sidebarOpen" aria-label="Menü öffnen">
       <span class="hamburger-bar"></span>
       <span class="hamburger-bar"></span>
       <span class="hamburger-bar"></span>
     </button>
-    <!-- Sidebar as overlay drawer -->
+    <!-- Sidebar as drawer on mobile -->
     <aside
       class="sidebar"
       :class="{ 'sidebar-open': sidebarOpen }"
@@ -44,7 +44,7 @@
         </button>
       </div>
     </aside>
-    <!-- Overlay for sidebar -->
+    <!-- Overlay for mobile -->
     <div v-if="sidebarOpen" class="sidebar-overlay" @click="sidebarOpen = false"></div>
     <main class="main-content">
       <slot />
@@ -144,14 +144,20 @@ function handleLogout() {
 }
 </script>
 
-</style>
 <style scoped>
+.sidebar-loading {
+  font-size: 1.1rem;
+  color: #7c3aed;
+  font-weight: 600;
+  padding: 0.7rem 1.2rem;
+  text-align: center;
+}
 .sidebar-hamburger {
-  display: flex;
+  display: none;
   position: fixed;
   top: 1.2rem;
   left: 1.2rem;
-  z-index: 2001;
+  z-index: 1001;
   width: 44px;
   height: 44px;
   background: #fff;
@@ -172,11 +178,66 @@ function handleLogout() {
   border-radius: 2px;
   display: block;
 }
+.sidebar-overlay {
+  display: none;
+}
+@media (max-width: 900px) {
+  .sidebar-hamburger {
+    display: flex;
+  }
+  .sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    z-index: 1002;
+    transform: translateX(-100%);
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 2px 0 16px 0 rgba(124, 58, 237, 0.13);
+    flex-direction: column;
+    align-items: flex-start;
+    padding-top: 2.2rem;
+  }
+  .sidebar.sidebar-open {
+    transform: translateX(0);
+  }
+  .sidebar-logo {
+    align-self: flex-start;
+    margin-bottom: 2.2rem;
+    margin-left: 1.2rem;
+  }
+  .sidebar-nav {
+    flex-direction: column;
+    gap: 0.7rem;
+    width: 100%;
+    align-items: flex-start;
+    margin-left: 1.2rem;
+  }
+  .sidebar-link {
+    width: 100%;
+    text-align: left;
+  }
+  .sidebar-overlay {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.18);
+    z-index: 1000;
+  }
+  .main-content {
+    min-height: 100vh;
+  }
+}
+.main-layout {
+  display: flex;
+  min-height: 100vh;
+  width: 100vw;
+  background: linear-gradient(135deg, #38bdf8 0%, #f3e8ff 50%, #14b8a6 100%);
+}
 .sidebar {
-  position: fixed;
-  left: 0;
-  top: 0;
-  height: 100vh;
   width: 240px;
   background: #fff;
   border-right: 1px solid #f3e8ff;
@@ -184,13 +245,8 @@ function handleLogout() {
   flex-direction: column;
   align-items: center;
   padding: 2rem 1rem 1rem 1rem;
-  box-shadow: 2px 0 16px 0 rgba(124, 58, 237, 0.13);
-  z-index: 2002;
-  transform: translateX(-100%);
-  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.sidebar.sidebar-open {
-  transform: translateX(0);
+  box-shadow: 2px 0 16px 0 rgba(124, 58, 237, 0.08);
+  z-index: 10;
 }
 .sidebar-logo {
   font-size: 2rem;
@@ -216,27 +272,14 @@ function handleLogout() {
   text-decoration: none;
   padding: 0.7rem 1.2rem;
   border-radius: 0.7rem;
-  transition: background 0.18s, color 0.18s;
+  transition:
+    background 0.18s,
+    color 0.18s;
 }
 .sidebar-link:hover,
 .sidebar-link:focus {
   background: #f3e8ff;
   color: #14b8a6;
-}
-.sidebar-overlay {
-  display: block;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.18);
-  z-index: 2000;
-}
-.main-layout {
-  min-height: 100vh;
-  width: 100vw;
-  background: linear-gradient(135deg, #38bdf8 0%, #f3e8ff 50%, #14b8a6 100%);
 }
 .main-content {
   flex: 1;
@@ -245,4 +288,76 @@ function handleLogout() {
   justify-content: center;
   min-height: 100vh;
 }
+@media (max-width: 900px) {
+  .sidebar {
+    width: 70px;
+    padding: 1rem 0.2rem 1rem 0.2rem;
+  }
+  .sidebar-logo {
+    font-size: 1.2rem;
+    margin-bottom: 1.2rem;
+  }
+  .sidebar-link {
+    font-size: 0.95rem;
+    padding: 0.5rem 0.7rem;
+  }
+}
+@media (max-width: 600px) {
+  .main-layout {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: 100vw;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 0.7rem 1rem 1rem 1rem;
+    box-shadow: 0 2px 16px 0 rgba(124, 58, 237, 0.08);
+    border-right: none;
+    border-bottom: 1px solid #f3e8ff;
+    min-height: 100vh;
+  }
+  .sidebar-logo {
+    margin-bottom: 1.2rem;
+    font-size: 1.2rem;
+    margin-left: 0;
+  }
+  .sidebar-nav {
+    flex-direction: column;
+    gap: 0.7rem;
+    width: 100%;
+    align-items: flex-start;
+    margin-left: 0;
+  }
+  .sidebar-link {
+    width: 100%;
+    text-align: left;
+  }
+  .sidebar-signout-wrap {
+    width: 100%;
+    margin-top: auto;
+    display: flex;
+    justify-content: center;
+    padding-top: 1.2rem;
+    padding-bottom: 0.5rem;
+  }
+  .main-content {
+    min-height: calc(100vh - 60px);
+  }
+}
 </style>
+
+.signout-fixed { position: fixed; top: 1.5rem; right: 2.5rem; z-index: 2000; } .signout-btn {
+padding: 0.5rem 1.5rem; font-size: 1rem; border-radius: 2rem; background: linear-gradient(90deg,
+#38bdf8 0%, #14b8a6 100%); color: #fff; font-weight: 600; border: none; box-shadow: 0 2px 8px 0
+rgba(20, 184, 166, 0.13); transition: background 0.2s, transform 0.2s; } .signout-btn:hover {
+background: linear-gradient(90deg, #14b8a6 0%, #38bdf8 100%); transform: translateY(-2px)
+scale(1.04); color: #fff; } .sidebar-signout { margin-top: auto; width: 100%; display: flex;
+justify-content: center; padding-top: 2rem; } .sidebar-signout-btn { width: 100%; text-align:
+center; background: linear-gradient(90deg, #38bdf8 0%, #14b8a6 100%); color: #fff; font-weight: 600;
+border: none; border-radius: 0.7rem; box-shadow: 0 2px 8px 0 rgba(20, 184, 166, 0.13); transition:
+background 0.2s, transform 0.2s; margin-bottom: 0.5rem; } .sidebar-signout-btn:hover { background:
+linear-gradient(90deg, #14b8a6 0%, #38bdf8 100%); color: #fff; transform: translateY(-2px)
+scale(1.04); }
+
+
