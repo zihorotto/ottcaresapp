@@ -11,7 +11,7 @@
       class="sidebar"
       :class="{ 'sidebar-open': sidebarOpen }"
       @click.self="sidebarOpen = false"
-    > 
+    >
       <NuxtLink to="/" class="sidebar-logo" @click="sidebarOpen = false">
         <span>OttoCares</span>
       </NuxtLink>
@@ -21,13 +21,21 @@
         </template>
         <template v-else-if="user">
           <template v-if="hasProfile">
-            <NuxtLink class="sidebar-link" @click="navigateAndClose('/neu_pflegekraft')">New Pflegekraft</NuxtLink>
-            <NuxtLink class="sidebar-link" @click="navigateAndClose('/carers')">Pflegekräfte</NuxtLink>
+            <NuxtLink class="sidebar-link" to="/neu_pflegekraft" @click="sidebarOpen = false"
+              >New Pflegekraft</NuxtLink
+            >
+            <NuxtLink class="sidebar-link" to="/carers" @click="sidebarOpen = false"
+              >Pflegekräfte</NuxtLink
+            >
             <!-- Mein Profil button removed -->
           </template>
           <template v-else>
-            <NuxtLink class="sidebar-link" @click="navigateAndClose('/neu_pflegekraft')">New Pflegekraft</NuxtLink>
-            <NuxtLink class="sidebar-link" @click="navigateAndClose('/carers')">Pflegekräfte</NuxtLink>
+            <NuxtLink class="sidebar-link" to="/neu_pflegekraft" @click="sidebarOpen = false"
+              >New Pflegekraft</NuxtLink
+            >
+            <NuxtLink class="sidebar-link" to="/carers" @click="sidebarOpen = false"
+              >Pflegekräfte</NuxtLink
+            >
           </template>
         </template>
       </nav>
