@@ -245,4 +245,4 @@ function handleLogout() {
   justify-content: center;
   min-height: 100vh;
 }
- </style>
+</style>
