@@ -21,27 +21,13 @@
         </template>
         <template v-else-if="user">
           <template v-if="hasProfile">
-            <NuxtLink
-              class="sidebar-link"
-              to="/neu_pflegekraft"
-              @click.capture="sidebarOpen = false"
-              >New Pflegekraft</NuxtLink
-            >
-            <NuxtLink class="sidebar-link" to="/carers" @click.capture="sidebarOpen = false"
-              >Pflegekräfte</NuxtLink
-            >
+            <NuxtLink class="sidebar-link" to="/neu_pflegekraft">New Pflegekraft</NuxtLink>
+            <NuxtLink class="sidebar-link" to="/carers">Pflegekräfte</NuxtLink>
             <!-- Mein Profil button removed -->
           </template>
           <template v-else>
-            <NuxtLink
-              class="sidebar-link"
-              to="/neu_pflegekraft"
-              @click.capture="sidebarOpen = false"
-              >New Pflegekraft</NuxtLink
-            >
-            <NuxtLink class="sidebar-link" to="/carers" @click.capture="sidebarOpen = false"
-              >Pflegekräfte</NuxtLink
-            >
+            <NuxtLink class="sidebar-link" to="/neu_pflegekraft">New Pflegekraft</NuxtLink>
+            <NuxtLink class="sidebar-link" to="/carers">Pflegekräfte</NuxtLink>
           </template>
         </template>
       </nav>
