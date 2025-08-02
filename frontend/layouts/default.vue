@@ -11,7 +11,7 @@
       class="sidebar"
       :class="{ 'sidebar-open': sidebarOpen }"
       @click.self="sidebarOpen = false"
-    ><NuxtLink 
+    > 
       <NuxtLink to="/" class="sidebar-logo" @click="sidebarOpen = false">
         <span>OttoCares</span>
       </NuxtLink>
@@ -21,13 +21,13 @@
         </template>
         <template v-else-if="user">
           <template v-if="hasProfile">
-            <button class="sidebar-link" @click="navigateAndClose('/neu_pflegekraft')">New Pflegekraft</button>
-            <button class="sidebar-link" @click="navigateAndClose('/carers')">Pflegekräfte</button>
+            <NuxtLink class="sidebar-link" @click="navigateAndClose('/neu_pflegekraft')">New Pflegekraft</NuxtLink>
+            <NuxtLink class="sidebar-link" @click="navigateAndClose('/carers')">Pflegekräfte</NuxtLink>
             <!-- Mein Profil button removed -->
           </template>
           <template v-else>
-            <button class="sidebar-link" @click="navigateAndClose('/neu_pflegekraft')">New Pflegekraft</button>
-            <button class="sidebar-link" @click="navigateAndClose('/carers')">Pflegekräfte</button>
+            <NuxtLink class="sidebar-link" @click="navigateAndClose('/neu_pflegekraft')">New Pflegekraft</NuxtLink>
+            <NuxtLink class="sidebar-link" @click="navigateAndClose('/carers')">Pflegekräfte</NuxtLink>
           </template>
         </template>
       </nav>
@@ -55,6 +55,7 @@
 
 <script setup>
 async function navigateAndClose(path) {
+  console.log('Navigating to:', path);
   await router.push(path);
   sidebarOpen.value = false;
 }
