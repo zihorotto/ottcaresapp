@@ -21,40 +21,13 @@
         </template>
         <template v-else-if="user">
           <template v-if="hasProfile">
-            <NuxtLink
-              class="sidebar-link"
-              to="/neu_pflegekraft"
-              :key="'neu_pflegekraft-' + route.fullPath"
-              @click="handleSidebarNav('/neu_pflegekraft')"
-              >New Pflegekraft</NuxtLink
-            >
-            <NuxtLink
-              class="sidebar-link"
-              to="/carers"
-              :key="'carers-' + route.fullPath"
-              @click="handleSidebarNav('/carers')"
-              >Pflegekräfte</NuxtLink
-            >
+            <NuxtLink class="sidebar-link" to="/neu_pflegekraft" @click.capture="sidebarOpen = false">New Pflegekraft</NuxtLink>
+            <NuxtLink class="sidebar-link" to="/carers" @click.capture="sidebarOpen = false">Pflegekräfte</NuxtLink>
             <!-- Mein Profil button removed -->
           </template>
           <template v-else>
-            <NuxtLink
-              class="sidebar-link"
-              to="/neu_pflegekraft"
-              :key="'neu_pflegekraft-' + route.fullPath"
-              @click="handleSidebarNav('/neu_pflegekraft')"
-              >New Pflegekraft</NuxtLink
-            >
-            <NuxtLink
-              class="sidebar-link"
-              to="/carers"
-              :key="'carers-' + route.fullPath"
-              @click="handleSidebarNav('/carers')"
-              >Pflegekräfte</NuxtLink
-            >
-            function handleSidebarNav(path) { // fallback: try programmatic navigation if NuxtLink
-            fails setTimeout(() => { if (route.fullPath !== path) { router.push(path); }
-            sidebarOpen.value = false; }, 0); }
+            <NuxtLink class="sidebar-link" to="/neu_pflegekraft" @click.capture="sidebarOpen = false">New Pflegekraft</NuxtLink>
+            <NuxtLink class="sidebar-link" to="/carers" @click.capture="sidebarOpen = false">Pflegekräfte</NuxtLink>
           </template>
         </template>
       </nav>
