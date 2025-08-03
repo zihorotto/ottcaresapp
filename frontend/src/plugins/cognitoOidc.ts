@@ -1,5 +1,6 @@
 import { UserManager } from 'oidc-client-ts';
 import { useRuntimeConfig } from '#app';
+import { useRouter } from 'vue-router';
 
 export function createUserManager() {
   const config = useRuntimeConfig();
@@ -13,7 +14,6 @@ export function createUserManager() {
   return new UserManager({ ...cognitoAuthConfig });
 }
 
-
 export async function signOutRedirect() {
   const userManager = createUserManager();
   await userManager.removeUser();
@@ -24,5 +24,13 @@ export async function signOutRedirect() {
   if (import.meta.client) {
     // eslint-disable-next-line no-undef
     window.location.href = `${cognitoDomain}/logout?client_id=${clientId}&logout_uri=${encodeURIComponent(String(logoutUri))}`;
+  }
+}
+
+export async function handleTokenError(error: Error) {
+  const router = useRouter();
+  if (error?.message === 'No token provided') {
+    console.error('Token error:', error);
+    await router.push('/login');
   }
 }

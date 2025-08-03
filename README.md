@@ -43,6 +43,7 @@ OttoCares ist eine moderne Cloud-Plattform, die Pflegekräfte und Familien zusam
 - (Falls nicht funktionsfähig, bitte neuen Test-Account beim Otto anfragen oder selbst registrieren)
 
 Für die Entwicklung:
+
 ### Entwicklung starten
 
 1. Repository klonen und ins Projektverzeichnis wechseln
@@ -136,6 +137,31 @@ For developing:
 - Sidebar is hamburger on mobile, fixed on desktop
 - Chat is only for logged-in users
 - In dev, all API endpoints run on localhost
+
+---
+
+### Screenshots
+
+- **Home Page:**
+  ![Home Page](pictures/home.jpg)
+
+- **Login Page:**
+  ![Login Page](pictures/login.jpg)
+
+- **Register Page:**
+  ![Register Page](pictures/register.jpg)
+
+- **Logged-in Main Page:**
+  ![Logged-in Main Page](pictures/loggedmain.jpg)
+
+- **Carers List:**
+  ![Carers List](pictures/carers.jpg)
+
+- **Carer Profile:**
+  ![Carer Profile](pictures/carerid.jpg)
+
+- **New Feature Page:**
+  ![New Feature Page](pictures/chat.jpg)
 
 ---
 

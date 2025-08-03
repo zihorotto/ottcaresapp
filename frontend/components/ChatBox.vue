@@ -17,7 +17,7 @@
       </div>
     </div>
     <form @submit.prevent="sendMessage" class="chat-form">
-      <input v-model="input" type="text" placeholder="Írj üzenetet..." />
+      <input v-model="input" type="text" placeholder="Schreibe eine Nachricht..." />
       <button type="submit">Küldés</button>
     </form>
   </div>
