@@ -44,6 +44,7 @@ function handleCreated() {
   align-items: center;
   justify-content: center;
   gap: 0.7rem;
+  margin-top: 4rem;
 }
 .neu_pflegekraft-card {
   background: rgba(255, 255, 255, 0.85);

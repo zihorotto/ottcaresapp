@@ -1,10 +1,6 @@
 <template>
   <div class="main-layout">
-    <button
-      class="sidebar-hamburger"
-      @click="sidebarOpen = !sidebarOpen"
-      aria-label="Menü öffnen"
-    >
+    <button class="sidebar-hamburger" @click="sidebarOpen = !sidebarOpen" aria-label="Menü öffnen">
       <span class="hamburger-bar"></span>
       <span class="hamburger-bar"></span>
       <span class="hamburger-bar"></span>
@@ -19,25 +15,15 @@
           <div class="sidebar-loading">Wird synchronisiert...</div>
         </template>
         <template v-else-if="user">
-          <NuxtLink
-            class="sidebar-link"
-            to="/neu_pflegekraft"
-            @click="closeSidebar"
+          <NuxtLink class="sidebar-link" to="/neu_pflegekraft" @click="closeSidebar"
             >New Pflegekraft</NuxtLink
           >
-          <NuxtLink class="sidebar-link" to="/carers" @click="closeSidebar"
-            >Pflegekräfte</NuxtLink
-          >
+          <NuxtLink class="sidebar-link" to="/carers" @click="closeSidebar">Pflegekräfte</NuxtLink>
         </template>
       </nav>
       <div style="flex: 1 1 auto"></div>
-      <div
-        v-if="user && !loadingUser"
-        class="sidebar-link sidebar-signout-wrap"
-      >
-        <button class="sidebar-link sidebar-signout-btn" @click="logout">
-          Abmelden
-        </button>
+      <div v-if="user && !loadingUser" class="sidebar-link sidebar-signout-wrap">
+        <button class="sidebar-link sidebar-signout-btn" @click="logout">Abmelden</button>
       </div>
     </aside>
 
@@ -51,10 +37,10 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from "vue";
-import { useRoute } from "vue-router";
-import GlobalChat from "~/components/GlobalChat.vue";
-import { createUserManager, signOutRedirect } from "~/src/plugins/cognitoOidc";
+import { ref, onMounted, watch } from 'vue';
+import { useRoute } from 'vue-router';
+import GlobalChat from '~/components/GlobalChat.vue';
+import { createUserManager, signOutRedirect } from '~/src/plugins/cognitoOidc';
 
 const sidebarOpen = ref(false);
 const route = useRoute();
@@ -73,7 +59,7 @@ function logout() {
 
 watch(
   () => route.fullPath,
-  () => closeSidebar()
+  () => closeSidebar(),
 );
 
 onMounted(async () => {
@@ -88,12 +74,7 @@ onMounted(async () => {
   display: flex;
   min-height: 100vh;
   width: 100vw;
-  background: linear-gradient(
-    135deg,
-    #38bdf8 0%,
-    #f3e8ff 50%,
-    #14b8a6 100%
-  );
+  background: linear-gradient(135deg, #38bdf8 0%, #f3e8ff 50%, #14b8a6 100%);
 }
 
 .sidebar {
@@ -193,9 +174,13 @@ onMounted(async () => {
   }
   .sidebar-logo {
     margin-left: 1.2rem;
+    margin-top: 1.5rem;
   }
   .sidebar-nav {
     margin-left: 1.2rem;
+  }
+  .sidebar-signout-wrap{
+    margin-bottom: 2rem;
   }
 }
 
