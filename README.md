@@ -160,8 +160,8 @@ For developing:
 - **Carer Profile:**
   ![Carer Profile](pictures/carerid.jpg)
 
-- **New Feature Page:**
-  ![New Feature Page](pictures/chat.jpg)
+- **Chat:**
+  ![Chat](pictures/chat.jpg)
 
 ---
 
